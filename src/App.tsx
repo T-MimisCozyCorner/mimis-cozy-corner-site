@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Link, useNavigate } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 const BLUEPRINTS = [
   { id: 'saas', name: 'SaaS Starter', desc: 'Complete SaaS boilerplate - Auth, Stripe, DB, Dashboard ready to ship', price: 97, badge: 'Most Popular' },
@@ -24,7 +24,7 @@ function Header() {
   return (
     <header style={{ position: 'sticky', top: 0, zIndex: 100, background: 'white', borderBottom: '1px solid #eee', padding: '12px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
       <Link to="/" style={{ fontWeight: 800, fontSize: '20px', textDecoration: 'none', color: '#0a0a0a' }}>Mimi's Cozy Corner</Link>
-      <nav style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+      <nav style={{ display: 'flex', gap: '16px' }}>
         <Link to="/blueprints" style={{ color: '#0a0a0a', textDecoration: 'none', fontWeight: 600 }}>Blueprints</Link>
         <Link to="/tools" style={{ color: '#0a0a0a', textDecoration: 'none', fontWeight: 600 }}>Tools</Link>
         <Link to="/products" style={{ color: '#0a0a0a', textDecoration: 'none', fontWeight: 600 }}>Products</Link>
@@ -40,7 +40,7 @@ function Page({ title, subtitle, children }: any) {
   return (
     <div style={{ background: 'white', minHeight: '100vh' }}>
       <div style={{ padding: '60px 24px 20px', maxWidth: '1200px', margin: '0 auto' }}>
-        <h1 style={{ color: '#0a0a0a', fontSize: '42px', fontWeight: 800, margin: '0 0 12px', display: 'block' }}>{title}</h1>
+        <h1 style={{ color: '#0a0a0a', fontSize: '42px', fontWeight: 800, margin: '0 0 12px', display: 'block', opacity: 1 }}>{title}</h1>
         {subtitle && <p style={{ color: '#666', fontSize: '18px', margin: 0 }}>{subtitle}</p>}
       </div>
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px 24px 80px' }}>{children}</div>
@@ -83,10 +83,7 @@ function Tools() {
 }
 
 function Products() {
-  const [custom, setCustom] = useState<any[]>([])
-  useEffect(() => {
-    setCustom([])
-  }, [])
+  const [custom] = useState<any[]>([])
   return (
     <Page title="Products" subtitle="7 blueprints + your custom products">
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
