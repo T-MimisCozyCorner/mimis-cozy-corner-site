@@ -40,7 +40,7 @@ function Page({ title, subtitle, children }: any) {
   return (
     <div style={{ background: 'white', minHeight: '100vh' }}>
       <div style={{ padding: '60px 24px 20px', maxWidth: '1200px', margin: '0 auto' }}>
-        <h1 style={{ color: '#0a0a0a', fontSize: '42px', fontWeight: 800, margin: '0 0 12px', display: 'block', opacity: 1 }}>{title}</h1>
+        <h1 style={{ color: '#BC13FE', fontSize: '42px', fontWeight: 800, margin: '0 0 12px', display: 'block', opacity: 1, textShadow: '0 0 10px #BC13FE' }}>{title}</h1>
         {subtitle && <p style={{ color: '#666', fontSize: '18px', margin: 0 }}>{subtitle}</p>}
       </div>
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px 24px 80px' }}>{children}</div>
@@ -55,7 +55,7 @@ function Blueprints() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
         {BLUEPRINTS.map(b => (
           <div key={b.id} style={{ border: '2px solid #eee', borderRadius: '16px', padding: '24px', background: 'white', boxShadow: '0 8px 24px rgba(0,0,0,0.06)' }}>
-            {b.badge && <div style={{ background: '#0a0a0a', color: 'white', padding: '4px 10px', borderRadius: '20px', fontSize: '12px', display: 'inline-block', marginBottom: '10px' }}>{b.badge}</div>}
+            {b.badge && <div style={{ background: '#BC13FE', color: 'white', padding: '4px 10px', borderRadius: '20px', fontSize: '12px', display: 'inline-block', marginBottom: '10px' }}>{b.badge}</div>}
             <h3 style={{ margin: '0 0 8px', color: '#0a0a0a' }}>{b.name}</h3>
             <p style={{ color: '#555', fontSize: '14px', lineHeight: '1.5', minHeight: '60px' }}>{b.desc}</p>
             <div style={{ fontSize: '28px', fontWeight: 800, margin: '12px 0', color: '#0a0a0a' }}>${b.price}</div>
@@ -67,7 +67,7 @@ function Blueprints() {
   )
 }
 
-function Tools() {
+function ToolsPage() {
   return (
     <Page title="Tools" subtitle="6 real tools with colors">
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '20px' }}>
@@ -82,10 +82,9 @@ function Tools() {
   )
 }
 
-function Products() {
-  const [custom] = useState<any[]>([])
+function ProductsPage() {
   return (
-    <Page title="Products" subtitle="7 blueprints + your custom products">
+    <Page title="Products" subtitle="7 blueprints + your custom products from Factory">
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
         {BLUEPRINTS.map(b => (
           <div key={b.id} style={{ border: '2px solid #eee', borderRadius: '16px', padding: '24px' }}>
@@ -94,21 +93,15 @@ function Products() {
             <div style={{ fontWeight: 800, marginTop: '8px' }}>${b.price}</div>
           </div>
         ))}
-        {custom.map((p: any) => (
-          <div key={p.id} style={{ border: '2px solid #4ECDC4', borderRadius: '16px', padding: '24px', background: '#F0FFF8' }}>
-            <h3 style={{ color: '#0a0a0a' }}>{p.name || p.title}</h3>
-            <p style={{ color: '#555' }}>{p.description}</p>
-          </div>
-        ))}
       </div>
     </Page>
   )
 }
 
-function Factory() { return <Page title="Factory" subtitle="Build pipeline - Atlas OS production"><p>Factory pipeline active</p></Page> }
-function Ads() { return <Page title="Ads $25 Pack" subtitle="50+ Canva templates"><p>La Tambora sample included</p></Page> }
-function Contact() { return <Page title="Contact" subtitle="Get in touch"><p>hello@mimiscozycorner.com</p></Page> }
-function Home() { return <Page title="Welcome to Mimi's Cozy Corner" subtitle="Atlas OS - Your business operating system"><Link to="/blueprints" style={{ background: '#0a0a0a', color: 'white', padding: '12px 20px', borderRadius: '8px', textDecoration: 'none' }}>View Blueprints</Link></Page> }
+function Factory() { return <Page title="Factory" subtitle="Build pipeline - Atlas OS production system"><p>Factory active - Idea to product in 24h</p></Page> }
+function Ads() { return <Page title="Ads $25 Pack" subtitle="50+ Canva templates including La Tambora"><p>La Tambora template editable</p></Page> }
+function Contact() { return <Page title="Contact" subtitle="Get in touch"><p>hello@mimiscozycorner.com - Paying rent one design at a time 🤎</p></Page> }
+function Home() { return <Page title="Welcome to Mimi's Cozy Corner" subtitle="Atlas OS - Your business operating system for neurospicy humans"><Link to="/blueprints" style={{ background: '#BC13FE', color: 'white', padding: '12px 20px', borderRadius: '8px', textDecoration: 'none', boxShadow: '0 0 15px #BC13FE' }}>View 7 Blueprints</Link></Page> }
 
 export default function App() {
   return (
@@ -117,8 +110,8 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/blueprints" element={<Blueprints />} />
-        <Route path="/tools" element={<Tools />} />
-        <Route path="/products" element={<Products />} />
+        <Route path="/tools" element={<ToolsPage />} />
+        <Route path="/products" element={<ProductsPage />} />
         <Route path="/factory" element={<Factory />} />
         <Route path="/ads" element={<Ads />} />
         <Route path="/contact" element={<Contact />} />
