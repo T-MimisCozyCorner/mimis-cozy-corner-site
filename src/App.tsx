@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, Route, Switch, useLocation } from 'wouter'
-import { ArrowRight, BadgeDollarSign, House, Menu, X, Mail, Sparkles, LayoutDashboard, Box, Factory as FactoryIcon, FileCode, Rocket, ShoppingBag, Bot, Palette, Globe, Zap, Layers, Wrench } from 'lucide-react'
+import { ArrowRight, BadgeDollarSign, House, Menu, X, Mail, Sparkles, Box, Factory as FactoryIcon, FileCode, Rocket, ShoppingBag, Bot, Palette, Globe, Zap, Layers, Wrench } from 'lucide-react'
 import avatar from './assets/mimi-avatar.png'
 import creativeAdsLogo from './assets/mimis-creative-ads-logo.png'
 import laTambora from './assets/la-tambora-sample.jpg'
@@ -8,27 +8,73 @@ import laTambora from './assets/la-tambora-sample.jpg'
 const SUPA_URL = import.meta.env.VITE_SUPABASE_URL
 const SUPA_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY
 
-function Header(){const[open,setOpen]=useState(false);const[loc]=useLocation();return(<header className="header"><div className="container header-inner"><Link href="/" className="logo">Mimi's Cozy Corner • Atlas</Link><nav className={open?"nav open":"nav"}><Link href="/" className={loc==='/'?'active':''}><House size={16}/> Home</Link><Link href="/atlas"><Layers size={16}/> Atlas</Link><Link href="/blueprints"><FileCode size={16}/> Blueprints</Link><Link href="/tools"><Wrench size={16}/> Tools</Link><Link href="/products"><Box size={16}/> Products</Link><Link href="/product-factory"><FactoryIcon size={16}/> Factory</Link><Link href="/creative-ads"><BadgeDollarSign size={16}/> Ads</Link><Link href="/contact"><Mail size={16}/> Contact</Link></nav><button className="menu-btn" onClick={()=>setOpen(!open)}>{open?<X/>:<Menu/>}</button></div></header>)}
-function Footer(){return<footer className="footer"><div className="container"><p>© 2026 Mimi's Cozy Corner • Atlas OS Incorporated • gjcmflhymliizvgtifjv</p></div></footer>}
+function Header(){const[open,setOpen]=useState(false);const[loc]=useLocation();return(<header className="header"><div className="container header-inner"><Link href="/" className="logo">Mimi's Cozy Corner • Atlas</Link><nav className={open?"nav open":"nav"}><Link href="/" className={loc==='/'?'active':''}><House size={16}/> Home</Link><Link href="/atlas"><Layers size={16}/> Atlas</Link><Link href="/blueprints"><FileCode size={16}/> Blueprints</Link><Link href="/tools"><Wrench size={16}/> Tools</Link><Link href="/products"><Box size={16}/> Products</Link><Link href="/product-factory"><FactoryIcon size={16}/> Factory</Link><Link href="/creative-ads"><BadgeDollarSign size={16}/> Ads $25</Link><Link href="/contact"><Mail size={16}/> Contact</Link></nav><button className="menu-btn" onClick={()=>setOpen(!open)}>{open?<X/>:<Menu/>}</button></div></header>)}
+function Footer(){return<footer className="footer"><div className="container"><p>© 2026 Mimi's Cozy Corner • Atlas OS • gjcmflhymliizvgtifjv</p></div></footer>}
 function useProducts(){const[p,setP]=useState<any[]>([]);useEffect(()=>{if(!SUPA_URL)return;fetch(`${SUPA_URL}/rest/v1/products?select=*&limit=50`,{headers:{apikey:SUPA_KEY,Authorization:`Bearer ${SUPA_KEY}`}}).then(r=>r.json()).then(d=>{if(Array.isArray(d))setP(d)})},[]);return p}
 
 const BLUEPRINTS = [
-  { id:'saas', icon: Rocket, title: "SaaS Starter", desc: "Complete SaaS boilerplate", price: "$97", color: "#EFF6FF", tag: "Most Popular", link: "/contact" },
-  { id:'ecom', icon: ShoppingBag, title: "Ecom Kit", desc: "Shopify-ready kit", price: "$67", color: "#F0FDF4", link: "/contact" },
-  { id:'ai', icon: Bot, title: "AI Agent OS", desc: "Atlas Core - AI workforce", price: "$147", color: "#FEF3C7", tag: "Atlas Core", link: "/contact" },
-  { id:'ads', icon: Palette, title: "Creative Ads Pack", desc: "50+ templates La Tambora", price: "$25", color: "#FFF0F5", link: "/creative-ads" },
-  { id:'tools', icon: Globe, title: "Digital Tools", desc: "Landing pages + funnels", price: "$47", color: "#F5F3FF", link: "/contact" },
-  { id:'factory', icon: FactoryIcon, title: "Product Factory", desc: "Ship in 24h system", price: "$197", color: "#ECFDF5", tag: "New", link: "/product-factory" },
-  { id:'bundle', icon: Zap, title: "Atlas OS Bundle", desc: "ALL 6 + support", price: "$497", color: "#0a0a0a", textColor: "white", tag: "Best Value", link: "/contact" },
+  { id:'saas', icon: Rocket, title: "SaaS Starter", desc: "Complete SaaS boilerplate - Auth, Stripe, DB", price: "$97", color: "#EFF6FF", tag: "Most Popular" },
+  { id:'ecom', icon: ShoppingBag, title: "Ecom Kit", desc: "Shopify-ready storefront + admin", price: "$67", color: "#F0FDF4" },
+  { id:'ai', icon: Bot, title: "AI Agent OS", desc: "Atlas Core - 100 prompts + 5 agents", price: "$147", color: "#FEF3C7", tag: "Atlas Core" },
+  { id:'ads', icon: Palette, title: "Creative Ads Pack", desc: "50+ Canva templates incl. La Tambora", price: "$25", color: "#FFF0F5" },
+  { id:'tools', icon: Globe, title: "Digital Tools Stack", desc: "10 Landing pages + 3 Funnels", price: "$47", color: "#F5F3FF" },
+  { id:'factory', icon: FactoryIcon, title: "Product Factory", desc: "Idea to product in 24h system", price: "$197", color: "#ECFDF5", tag: "New" },
+  { id:'bundle', icon: Zap, title: "Atlas OS Bundle", desc: "ALL 6 blueprints + factory + 1:1 support", price: "$497", color: "#0a0a0a", dark: true, tag: "Best Value" },
 ]
 
-function Home(){const products=useProducts();return<><Header/><main><section className="hero"><div className="container hero-grid"><div><div className="eyebrow">ATLAS OS • INCORPORATED • LIVE</div><h1>Your Cozy Empire OS</h1><p>{products.length} products • 7 blueprints • Factory live</p><div className="cta-row" style={{display:'flex', gap:12, marginTop:20}}><Link className="button primary" href="/atlas">Enter Atlas OS <ArrowRight size={18}/></Link><Link className="button secondary" href="/blueprints">Blueprints</Link></div></div><div className="avatar-card"><img src={avatar} alt="Mimi"/><div className="avatar-chip"><Sparkles size={15}/> Live</div></div></div></section></main><Footer/></>}
-function AtlasOS(){return<><Header/><main><section className="page-hero" style={{background:'#0a0a0a', color:'white', padding:'60px 0'}}><div className="container"><h1>Atlas OS</h1><p>Atlas OS now inside Mimi's Cozy Corner - Unified</p><div style={{display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(280px,1fr))', gap:16, marginTop:32}}><div style={{background:'#111', padding:24, borderRadius:16}}><Layers size={32}/><h3>7 Blueprints</h3><Link href="/blueprints" className="button primary">Explore</Link></div><div style={{background:'#111', padding:24, borderRadius:16}}><Wrench size={32}/><h3>6 Tools</h3><Link href="/tools" className="button primary">Tools</Link></div><div style={{background:'#111', padding:24, borderRadius:16}}><FactoryIcon size={32}/><h3>Factory</h3><Link href="/product-factory" className="button primary">Factory</Link></div></div></div></section></main><Footer/></>}
-function Blueprints(){const[sel,setSel]=useState<any>(null);return<><Header/><main><section className="page-hero"><div className="container"><h1>Business Blueprints — 7 Live</h1><p>Your ready-to-launch templates from Atlas OS - Click for details</p><div style={{display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(300px,1fr))', gap:20, marginTop:32}}>{BLUEPRINTS.map((b,i)=>{const Icon=b.icon;return<div key={i} onClick={()=>setSel(b)} style={{background:b.textColor||'white', color:b.textColor?'white':'#0a0a0a', border:'1px solid #eee', borderRadius:20, padding:24, position:'relative', cursor:'pointer'}}>{b.tag&&<span style={{position:'absolute', top:16, right:16, background:b.textColor?'white':'#0a0a0a', color:b.textColor?'black':'white', fontSize:11, padding:'4px 10px', borderRadius:20}}>{b.tag}</span>}<div style={{width:48, height:48, borderRadius:12, background:b.textColor?'#222':b.color, display:'flex', alignItems:'center', justifyContent:'center', marginBottom:16}}><Icon size={24}/></div><h3>{b.title}</h3><p style={{color:b.textColor?'#aaa':'#666', fontSize:14}}>{b.desc}</p><div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginTop:16}}><strong style={{fontSize:22}}>{b.price}</strong><Link href={b.link} onClick={(e)=>e.stopPropagation()} className="button primary" style={{padding:'8px 16px', fontSize:13, textDecoration:'none', background:b.textColor?'white':'#0a0a0a', color:b.textColor?'black':'white'}}>Launch</Link></div></div>})}</div></div></section>{sel&&<div style={{position:'fixed', inset:0, background:'rgba(0,0,0,0.6)', display:'flex', alignItems:'center', justifyContent:'center', zIndex:50, padding:20}} onClick={()=>setSel(null)}><div style={{background:'white', borderRadius:20, padding:32, maxWidth:500, width:'100%'}} onClick={e=>e.stopPropagation()}><h2>{sel.title} - {sel.price}</h2><p style={{color:'#666', marginTop:12}}>{sel.desc}</p><div style={{display:'flex', gap:12, marginTop:24}}><Link href={sel.link} className="button primary" style={{flex:1, justifyContent:'center', textDecoration:'none'}}>Launch Now</Link><button className="button secondary" onClick={()=>setSel(null)}>Close</button></div></div></div>}</main><Footer/></>}
-function Tools(){const TOOLS=[{name:"Product Generator", desc:"Generate ideas", action:"/product-factory"}, {name:"Ad Creator", desc:"La Tambora ads", action:"/creative-ads"}, {name:"Blueprint Builder", desc:"Build blueprint", action:"/blueprints"}, {name:"Supabase", desc:"gjcmflhymliizvgtifjv", action:"/products"}];return<><Header/><main><section className="page-hero" style={{background:'#F0F7FF'}}><div className="container"><h1>Tools - 6 Live</h1><div style={{display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(280px,1fr))', gap:16, marginTop:24}}>{TOOLS.map((t,i)=><div key={i} style={{background:'white', padding:20, borderRadius:12}}><h3>{t.name}</h3><p style={{color:'#666', fontSize:14}}>{t.desc}</p><Link href={t.action} className="button secondary" style={{marginTop:12}}>Open</Link></div>)}</div></div></section></main><Footer/></>}
-function Dashboard(){const p=useProducts();return<><Header/><main><section className="page-hero" style={{background:'#0a0a0a', color:'white'}}><div className="container"><h1>Dashboard - {p.length} Products</h1></div></section></main><Footer/></>}
-function Products(){const p=useProducts();return<><Header/><main><section className="page-hero" style={{background:'#F0F7FF'}}><div className="container"><h1>Products - {p.length} Live</h1>{p.map((x:any,i:number)=><div key={i} style={{background:'white', padding:16, borderRadius:12, marginTop:8, display:'flex', justifyContent:'space-between'}}><strong>{x.name||x.title}</strong><span>{x.price}</span></div>)}</div></section></main><Footer/></>}
-function ProductFactory(){const[name,setName]=useState("");const[price,setPrice]=useState("$25");const[msg,setMsg]=useState("");async function create(){if(!name)return setMsg("Enter name");setMsg("Creating...");const r=await fetch(`${SUPA_URL}/rest/v1/products`,{method:'POST',headers:{apikey:SUPA_KEY,Authorization:`Bearer ${SUPA_KEY}`,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({name,title:name,price,status:'Draft',created_at:new Date().toISOString()})});setMsg(r.ok?"✅ Created":"Error "+r.status);setName("")}return<><Header/><main><section className="page-hero" style={{background:'#FFF0F5'}}><div className="container" style={{maxWidth:600}}><h1>Factory</h1><div style={{background:'white', padding:24, borderRadius:16, marginTop:20}}><input value={name} onChange={e=>setName(e.target.value)} placeholder="Product name" style={{width:'100%', padding:14, borderRadius:10, border:'1px solid #ddd'}}/><input value={price} onChange={e=>setPrice(e.target.value)} placeholder="$25" style={{width:'100%', padding:14, borderRadius:10, border:'1px solid #ddd', marginTop:12}}/><button onClick={create} className="button primary" style={{width:'100%', marginTop:12, padding:14}}>Create</button><p>{msg}</p></div></div></section></main><Footer/></>}
-function CreativeAds(){return<><Header/><main><section className="page-hero"><div className="container" style={{maxWidth:700, textAlign:'center'}}><img src={creativeAdsLogo} alt="logo" style={{maxWidth:220, margin:'0 auto 20px'}}/><h1>Ads $25</h1><img src={laTambora} alt="ad" style={{width:'100%', borderRadius:16, margin:'20px 0'}}/><Link href="/contact" className="button primary">Buy $25</Link></div></section></main><Footer/></>}
-function Contact(){return<><Header/><main><section className="page-hero"><div className="container" style={{textAlign:'center'}}><h1>Contact</h1><p>@mimis_corner_co</p></div></section></main><Footer/></>}
-export default function App(){return(<Switch><Route path="/"><Home/></Route><Route path="/atlas"><AtlasOS/></Route><Route path="/blueprints"><Blueprints/></Route><Route path="/tools"><Tools/></Route><Route path="/dashboard"><Dashboard/></Route><Route path="/products"><Products/></Route><Route path="/product-factory"><ProductFactory/></Route><Route path="/creative-ads"><CreativeAds/></Route><Route path="/contact"><Contact/></Route><Route><Home/></Route></Switch>)}
+function Home(){const products=useProducts();return<><Header/><main><section className="hero"><div className="container hero-grid"><div><div className="eyebrow">ATLAS OS • INCORPORATED • LIVE</div><h1>Your Cozy Empire OS</h1><p>{products.length} products • 7 blueprints</p><div style={{display:'flex', gap:12, marginTop:20}}><Link className="button primary" href="/atlas">Enter Atlas OS <ArrowRight size={18}/></Link><Link className="button secondary" href="/blueprints">Blueprints</Link></div></div><div className="avatar-card"><img src={avatar} alt="Mimi"/><div className="avatar-chip"><Sparkles size={15}/> Live</div></div></div></section></main><Footer/></>}
+
+function AtlasOS(){return<><Header/><main><section className="page-hero" style={{background:'#0a0a0a', color:'white', padding:'60px 0'}}><div className="container"><h1>Atlas OS</h1><p>Unified into Mimi's Cozy Corner</p></div></section></main><Footer/></>}
+
+function Blueprints(){
+  const[sel,setSel]=useState<any>(null);
+  return<><Header/><main>
+    <section className="page-hero"><div className="container">
+      <h1>Business Blueprints — 7 Live</h1><p>Click card for details. Launch opens product.</p>
+      <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(320px,1fr))', gap:20, marginTop:32}}>
+        {BLUEPRINTS.map((b,i)=>{
+          const Icon=b.icon;
+          const isDark = (b as any).dark;
+          return(
+            <div key={i} onClick={()=>setSel(b)} style={{background:isDark?'#0a0a0a':'white', color:isDark?'white':'#0a0a0a', border:'1px solid #eee', borderRadius:20, padding:24, position:'relative', cursor:'pointer'}}>
+              {b.tag&&<span style={{position:'absolute', top:16, right:16, background:isDark?'white':'#0a0a0a', color:isDark?'black':'white', fontSize:11, fontWeight:700, padding:'4px 10px', borderRadius:20}}>{b.tag}</span>}
+              <div style={{width:48, height:48, borderRadius:12, background:isDark?'#222':b.color, display:'flex', alignItems:'center', justifyContent:'center', marginBottom:16}}><Icon size={24} color={isDark?'white':'#0a0a0a'}/></div>
+              <h3 style={{margin:'0 0 8px', fontSize:20, color:isDark?'white':'#0a0a0a'}}>{b.title}</h3>
+              <p style={{color:isDark?'#aaa':'#666', fontSize:14, margin:0, minHeight:40}}>{b.desc}</p>
+              <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginTop:20}}>
+                <strong style={{fontSize:26, color:isDark?'white':'#0a0a0a'}}>{b.price}</strong>
+                <button className="button primary" style={{padding:'10px 18px', fontSize:14, background:isDark?'white':'#0a0a0a', color:isDark?'black':'white'}}>Launch →</button>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+    </div></section>
+
+    {sel&&<div style={{position:'fixed', inset:0, background:'rgba(0,0,0,0.7)', display:'flex', alignItems:'center', justifyContent:'center', zIndex:50, padding:20}} onClick={()=>setSel(null)}>
+      <div style={{background:'white', borderRadius:20, padding:32, maxWidth:520, width:'100%'}} onClick={e=>e.stopPropagation()}>
+        <div style={{display:'flex', justifyContent:'space-between'}}>
+          <h2 style={{margin:0}}>{sel.title}</h2><span style={{fontSize:24, fontWeight:700}}>{sel.price}</span>
+        </div>
+        <p style={{color:'#666', marginTop:12}}>{sel.desc} — Full Atlas OS blueprint incorporated into Cozy Corner.</p>
+        <div style={{background:'#f5f5f5', padding:16, borderRadius:12, marginTop:16}}>
+          <strong>What you get:</strong><br/>
+          • Complete source files<br/>• Setup guide<br/>• Canva templates (for ads)<br/>• Lifetime updates
+        </div>
+        <div style={{display:'flex', gap:12, marginTop:24}}>
+          <Link href={sel.id==='ads'?'/creative-ads':sel.id==='factory'?'/product-factory':`/product-factory`} className="button primary" style={{flex:1, justifyContent:'center', textDecoration:'none', padding:'14px'}}>Launch Blueprint — {sel.price}</Link>
+          <button className="button secondary" onClick={()=>setSel(null)}>Close</button>
+        </div>
+        <p style={{fontSize:11, color:'#999', marginTop:12, textAlign:'center'}}>Stripe checkout coming soon — Currently launches into Factory</p>
+      </div>
+    </div>}
+  </main><Footer/></>
+}
+
+function Tools(){return<><Header/><main><section className="page-hero" style={{background:'#F0F7FF'}}><div className="container"><h1>Tools</h1></div></section></main><Footer/></>}
+function Products(){const p=useProducts();return<><Header/><main><section className="page-hero"><div className="container"><h1>Products - {p.length}</h1></div></section></main><Footer/></>}
+function ProductFactory(){const[name,setName]=useState("");const[price,setPrice]=useState("$25");const[msg,setMsg]=useState("");async function create(){if(!name)return setMsg("Enter name");setMsg("Creating...");const r=await fetch(`${SUPA_URL}/rest/v1/products`,{method:'POST',headers:{apikey:SUPA_KEY,Authorization:`Bearer ${SUPA_KEY}`,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({name,title:name,price,status:'Draft',created_at:new Date().toISOString()})});setMsg(r.ok?"✅ Created":"Error "+r.status)}return<><Header/><main><section className="page-hero" style={{background:'#FFF0F5'}}><div className="container" style={{maxWidth:600}}><h1>Factory</h1><input value={name} onChange={e=>setName(e.target.value)} placeholder="Product name" style={{width:'100%', padding:14, borderRadius:10, border:'1px solid #ddd', marginTop:20}}/><button onClick={create} className="button primary" style={{width:'100%', marginTop:12, padding:14}}>Create</button><p>{msg}</p></div></section></main><Footer/></>}
+function CreativeAds(){return<><Header/><main><section className="page-hero"><div className="container" style={{maxWidth:700, textAlign:'center'}}><img src={creativeAdsLogo} alt="logo" style={{maxWidth:220, margin:'0 auto 20px'}}/><h1>Ads Pack $25</h1><img src={laTambora} alt="ad" style={{width:'100%', borderRadius:16, margin:'20px 0'}}/></div></section></main><Footer/></>}
+function Contact(){return<><Header/><main><section className="page-hero"><div className="container" style={{textAlign:'center'}}><h1>Contact @mimis_corner_co</h1></div></section></main><Footer/></>}
+
+export default function App(){return(<Switch><Route path="/"><Home/></Route><Route path="/atlas"><AtlasOS/></Route><Route path="/blueprints"><Blueprints/></Route><Route path="/tools"><Tools/></Route><Route path="/products"><Products/></Route><Route path="/product-factory"><ProductFactory/></Route><Route path="/creative-ads"><CreativeAds/></Route><Route path="/contact"><Contact/></Route><Route><Home/></Route></Switch>)}
