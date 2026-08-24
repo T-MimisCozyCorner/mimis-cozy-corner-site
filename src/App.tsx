@@ -1,373 +1,76 @@
 import { useState } from "react";
-const STORE = "https://shop.mimiscozycorner.com/";
-const designs = [
- { title: "0 Days Since My", image: "/images/0%20Days%20since%20My%20Last%20Dad%20Joke%20.png" },
- { title: "3F124Ede 6B08 46F2 89F6", image: "/images/3f124ede-6b08-46f2-89f6-8bb1f8767e94.png" },
- { title: "Angels &Outlaws", image: "/images/ANGELS%20%26OUTLAWS.webp" },
- { title: "Ancient Flame", image: "/images/Ancient%20Flame.PNG" },
- { title: "Bear Of Backyard Avoidance", image: "/images/BEAR%20OF%20BACKYARD%20AVOIDANCE.png" },
- { title: "Behind Every Great Kid", image: "/images/BEHIND%20EVERY%20GREAT%20KID.png" },
- { title: "Believe In Yourself (Bright)", image: "/images/BELIEVE%20in%20YOURSELF%20%28BRIGHT%29.png" },
- { title: "Believe In Yourself (Dreamy)", image: "/images/BELIEVE%20in%20YOURSELF%20%28DREAMY%29.png" },
- { title: "Believe In Yourself (Night)", image: "/images/BELIEVE%20in%20YOURSELF%20%28NIGHT%29.png" },
- { title: "Bookish", image: "/images/BOOKISH.png" },
- { title: "Burnt Out Crispy Unicorn", image: "/images/BURNT%20OUT%20CRISPY%20UNICORN.png" },
- { title: "Baby Huey", image: "/images/Baby%20Huey.png" },
- { title: "Balance.Png", image: "/images/Balance.PNG.png" },
- { title: "Best Dad By Par", image: "/images/Best%20Dad%20By%20Par.png" },
- { title: "Blade And Bloom", image: "/images/Blade%20and%20Bloom.png" },
- { title: "Blessed & Stressed (1)", image: "/images/Blessed%20%26%20Stressed%20%281%29.png" },
- { title: "Blessed, Stressed, And Caffeinated", image: "/images/Blessed%2C%20stressed%2C%20and%20caffeinated%20chaos.png" },
- { title: "Bloom Beast", image: "/images/Bloom%20Beast.png" },
- { title: "Bright Motion", image: "/images/Bright%20Motion.png" },
- { title: "Bright Star", image: "/images/Bright%20Star.PNG" },
- { title: "Brightscale Gecko", image: "/images/Brightscale%20Gecko.png" },
- { title: "Buffalo Of Budgeting Breakdown", image: "/images/Buffalo%20of%20Budgeting%20Breakdown.png" },
- { title: "Burst Of Color", image: "/images/Burst%20of%20Color.PNG" },
- { title: "Butterflies", image: "/images/Butterflies.JPG" },
- { title: "Calm Mind Club", image: "/images/CALM%20MIND%20CLUB.png" },
- { title: "Chaos & Crown", image: "/images/CHAOS%20%26%20CROWN.png" },
- { title: "Chill Out (Colorful)", image: "/images/CHILL%20OUT%20%28COLORFUL%29%20.png" },
- { title: "Choose Calm (Plain)", image: "/images/CHOOSE%20CALM%20%28PLAIN%29.png" },
- { title: "Choose Calm (Zen)", image: "/images/CHOOSE%20CALM%20%28ZEN%29.png" },
- { title: "Cozy Reader Club (Cozy)", image: "/images/COZY%20READER%20CLUB%20%28COZY%29.png" },
- { title: "Cozy Reader Club (Plain)", image: "/images/COZY%20READER%20CLUB%20%28PLAIN%29.png" },
- { title: "Cozy Vibes", image: "/images/COZY%20VIBES.png" },
- { title: "Cpromoted To Mom, Still", image: "/images/CPromoted%20to%20mom%2C%20still%20figuring%20it%20out.png" },
- { title: "Calm Mind Club (Dreamy)", image: "/images/Calm%20Mind%20Club%20%28dreamy%29.png" },
- { title: "Calm Mind Club (Zen)", image: "/images/Calm%20Mind%20Club%20%28zen%29.png" },
- { title: "Casting Spells Not Opinions", image: "/images/Casting%20Spells%20Not%20Opinions.png" },
- { title: "Castle Of The Day", image: "/images/Castle%20of%20the%20day.png" },
- { title: "Castle Of The Night", image: "/images/Castle%20of%20the%20night.jpg" },
- { title: "Castle", image: "/images/Castle.jpg" },
- { title: "Cat In Chaos Overload", image: "/images/Cat%20in%20chaos%20overload.png" },
- { title: "Celestial Gaze", image: "/images/Celestial%20Gaze.png" },
- { title: "Chiseling His Way", image: "/images/Chiseling%20his%20way%20.png" },
- { title: "Choose Calm (Blue)", image: "/images/Choose%20Calm%20%28Blue%29.webp" },
- { title: "Choose Calm (Cozy)", image: "/images/Choose%20Calm%20%28cozy%29.webp" },
- { title: "Choose Calm (Green)", image: "/images/Choose%20Calm%20%28green%29.webp" },
- { title: "Chris 2024", image: "/images/Chris%202024.PNG" },
- { title: "Cloudy Train", image: "/images/Cloudy%20Train.png" },
- { title: "Colorful Energy", image: "/images/Colorful%20Energy.png" },
- { title: "Coyote Of Car\u2011Ride Commentary", image: "/images/Coyote%20of%20Car%E2%80%91Ride%20Commentary.png" },
- { title: "Cozy Homebody Coffee", image: "/images/Cozy%20homebody%20coffee.png" },
- { title: "Crimson Spiral", image: "/images/Crimson%20Spiral.png" },
- { title: "Crown And Carnage.Png", image: "/images/Crown%20and%20Carnage.png.png" },
- { title: "Crying A River", image: "/images/Crying%20a%20river.png" },
- { title: "Cultivating Self Compassion", image: "/images/Cultivating%20Self-Compassion.png" },
- { title: "Dads Dance Moves", image: "/images/DADS%20DANCE%20MOVES.png" },
- { title: "Dog Of Dad Jokes", image: "/images/DOG%20OF%20DAD%20JOKES.png" },
- { title: "Done Dragon", image: "/images/DONE%20DRAGON.png" },
- { title: "Done Dragon", image: "/images/DONE%20DRAGON.webp" },
- { title: "Dad Because Grandpa Wasn\u2019T", image: "/images/Dad%20Because%20Grandpa%20Wasn%E2%80%99t%20Cool%20Enough.png" },
- { title: "Dad Bod Built By", image: "/images/Dad%20Bod%20Built%20by%20BBQ%20and%20Bad%20Decisions.png" },
- { title: "Dad Eats My Fries", image: "/images/Dad%20Eats%20My%20Fries.png" },
- { title: "Dad Fueling The Family", image: "/images/Dad%20Fueling%20the%20Family%20With%20Dad%20Jokes%20%26%20Coffee.png" },
- { title: "Dad Jokes Are How", image: "/images/Dad%20Jokes%20Are%20How%20Eye%20Roll.png" },
- { title: "Dad Life Powered By", image: "/images/Dad%20Life%20Powered%20by%20Coffee%20and%20Patience.png" },
- { title: "Dad Master Of The", image: "/images/Dad%20Master%20of%20the%20Remote%20Control.png" },
- { title: "Dad Professional Thermostat Protector", image: "/images/Dad%20Professional%20Thermostat%20Protector.png" },
- { title: "Dad Sacrificing Sleep Since", image: "/images/Dad%20Sacrificing%20Sleep%20Since%20Forever.png" },
- { title: "Dad Tax Taking A", image: "/images/Dad%20Tax%20Taking%20a%20Piece%20of%20Your%20Snacks%20Since%20Day%20One.png" },
- { title: "Dad The Human Instructions", image: "/images/Dad%20The%20Human%20Instructions%20Nobody%20Reads.png" },
- { title: "Dad\u2019S Bbq Rule #1", image: "/images/Dad%E2%80%99s%20BBQ%20Rule%20%231%20If%20I%E2%80%99m%20Cooking%2C%20Stay%20Out%20of%20My%20Kitchen.png" },
- { title: "Dad\u2019S Chair Touch It", image: "/images/Dad%E2%80%99s%20Chair%20Touch%20It%20and%20You%E2%80%99re%20Grounded.png" },
- { title: "Dad\u2019S Cooking Timer \u201cI\u2019Ll", image: "/images/Dad%E2%80%99s%20Cooking%20Timer%20%E2%80%9CI%E2%80%99ll%20Know%20When%20It%E2%80%99s%20Done%E2%80%9D.png" },
- { title: "Dad\u2019S Driving Rules Silence", image: "/images/Dad%E2%80%99s%20Driving%20Rules%20Silence%20Means%20I%20Missed%20the%20Turn.png" },
- { title: "Dad\u2019S Favorite Child Depends", image: "/images/Dad%E2%80%99s%20Favorite%20Child%20Depends%20on%20Who%20Has%20Snacks.png" },
- { title: "Dad\u2019S Favorite Exercise Walking", image: "/images/Dad%E2%80%99s%20Favorite%20Exercise%20Walking%20to%20the%20Fridge.png" },
- { title: "Dad\u2019S Garage My Tools,", image: "/images/Dad%E2%80%99s%20Garage%20My%20Tools%2C%20My%20Rules.png" },
- { title: "Dad\u2019S Garage Where Projects", image: "/images/Dad%E2%80%99s%20Garage%20Where%20Projects%20Go%20to%20Never%20Be%20Finished.png" },
- { title: "Dad\u2019S Gas Station Stop", image: "/images/Dad%E2%80%99s%20Gas%20Station%20Stop%20Somehow%20Costs%20%2447%20Every%20Time.png" },
- { title: "Dad\u2019S Grill Schedule Burnt", image: "/images/Dad%E2%80%99s%20Grill%20Schedule%20Burnt%20Outside%2C%20Raw%20Inside%2C%20Full%20Confidence.png" },
- { title: "Dad\u2019S Grocery Store Mission", image: "/images/Dad%E2%80%99s%20Grocery%20Store%20Mission%20Go%20In%20for%20One%20Thing%2C%20Leave%20With%2037%20Snacks.png" },
- { title: "Dad\u2019S Hearing Works Selectively", image: "/images/Dad%E2%80%99s%20Hearing%20Works%20Selectively.png" },
- { title: "Dad\u2019S Lawn Rules Stripes", image: "/images/Dad%E2%80%99s%20Lawn%20Rules%20Stripes%20Matter%20More%20Than%20Feelings.png" },
- { title: "Dad\u2019S Nap The Most", image: "/images/Dad%E2%80%99s%20Nap%20The%20Most%20Protected%20Event%20in%20the%20House.png" },
- { title: "Dad\u2019S Official Language Grunts,", image: "/images/Dad%E2%80%99s%20Official%20Language%20Grunts%2C%20Sighs%20%26%20Dad%20Jokes.png" },
- { title: "Dad\u2019S Remote Control Rights", image: "/images/Dad%E2%80%99s%20Remote%20Control%20Rights%20Nobody%20Else%20Touches%20It.png" },
- { title: "Dad\u2019S Snack Stash Hidden", image: "/images/Dad%E2%80%99s%20Snack%20Stash%20Hidden%20Better%20Than%20Government%20Secrets.png" },
- { title: "Dad\u2019S Texting Style One", image: "/images/Dad%E2%80%99s%20Texting%20Style%20One%20Word%20Replies%20%26%20Zero%20Punctuation.png" },
- { title: "Dad\u2019S Toolbox Full Of", image: "/images/Dad%E2%80%99s%20Toolbox%20Full%20of%20Tools%20He%E2%80%99ll%20Never%20Let%20You%20Borrow.png" },
- { title: "Dad\u2019S Universal Fix \u201cPut", image: "/images/Dad%E2%80%99s%20Universal%20Fix%20%E2%80%9CPut%20Some%20Duct%20Tape%20On%20It%E2%80%9D.png" },
- { title: "Dad\u2019S Vacation Packing List", image: "/images/Dad%E2%80%99s%20Vacation%20Packing%20List%2014%20Cords%2C%202%20Coolers%20%26%20Zero%20Shirts.png" },
- { title: "Dad\u2019S Wallet Opens Faster", image: "/images/Dad%E2%80%99s%20Wallet%20Opens%20Faster%20at%20the%20Hardware%20Store.png" },
- { title: "Dad\u2019S Weather Forecast \u201cYep\u2026", image: "/images/Dad%E2%80%99s%20Weather%20Forecast%20%E2%80%9CYep%E2%80%A6%20It%E2%80%99s%20Hot%20Outside%E2%80%9D.png" },
- { title: "Divine Light Within", image: "/images/Divine%20Light%20Within.png" },
- { title: "Divine And Damned", image: "/images/Divine%20and%20Damned.png" },
- { title: "Dragon Of Domestic Doom", image: "/images/Dragon%20of%20Domestic%20Doom.png" },
- { title: "Dragon", image: "/images/Dragon.png" },
- { title: "Dream Beyond The Clouds", image: "/images/Dream%20beyond%20the%20clouds.png" },
- { title: "Drowning In Thought", image: "/images/Drowning%20in%20thought.png" },
- { title: "El General", image: "/images/EL%20GENERAL.png" },
- { title: "Earth, Fire, Wind, Water", image: "/images/Earth%2C%20Fire%2C%20Wind%2C%20Water.PNG" },
- { title: "Echo Of Color", image: "/images/Echo%20of%20Color%20.png" },
- { title: "Echoes Of The Ascendant", image: "/images/Echoes%20of%20the%20Ascendant%20Stone.png" },
- { title: "Embrace The Unexpected", image: "/images/Embrace%20the%20unexpected.png" },
- { title: "Explorer Fox \u2013 Adventure", image: "/images/Explorer%20Fox%20%E2%80%93%20Adventure%20Awaits%21.png" },
- { title: "Eye Of The Spirits", image: "/images/Eye%20of%20the%20Spirits.PNG" },
- { title: "Fire Of Myth (1)", image: "/images/Fire%20of%20Myth%20%281%29.png" },
- { title: "First My Mother, Forever", image: "/images/First%20my%20mother%2C%20forever%20my%20friend%202.png" },
- { title: "First My Mother, Forever", image: "/images/First%20my%20mother%2C%20forever%20my%20friend.png" },
- { title: "Forces Of Energy", image: "/images/Forces%20of%20Energy.png" },
- { title: "Forge Truth", image: "/images/Forge%20Truth.PNG" },
- { title: "Fuck Off!", image: "/images/Fuck%20Off%21.jpg" },
- { title: "Fuck Off!", image: "/images/Fuck%20Off%21.png" },
- { title: "Funny Mom Humor Moth", image: "/images/Funny%20Mom%20Humor%20Moth.png" },
- { title: "Funny Parent", image: "/images/Funny%20Parent.png" },
- { title: "Grim", image: "/images/GRIM%20.png" },
- { title: "Garden Of Love (1)", image: "/images/Garden%20of%20Love%20%281%29.png" },
- { title: "Genie Of Gendered Expectations", image: "/images/Genie%20of%20Gendered%20Expectations.png" },
- { title: "Glowing Butterflies", image: "/images/Glowing%20Butterflies%20.webp" },
- { title: "Glowing Woman.Png", image: "/images/Glowing%20Woman.PNG.png" },
- { title: "Goat Of Grocery Rage", image: "/images/Goat%20of%20Grocery%20Rage%20-%201.png" },
- { title: "Goat Of Grunt\u2011Based Communication", image: "/images/Goat%20of%20Grunt%E2%80%91Based%20Communication%20-%201.png" },
- { title: "God Sent Kids And", image: "/images/God-sent%20kids%20and%20blessings.png" },
- { title: "Healing In Progress (Bright)", image: "/images/HEALING%20in%20PROGRESS%20%28BRIGHT%29.png" },
- { title: "Healing In Progress (Calm)", image: "/images/HEALING%20in%20PROGRESS%20%28CALM%29%20.png" },
- { title: "Healing In Progress (Glow)", image: "/images/HEALING%20in%20PROGRESS%20%28GLOW%29%20.png" },
- { title: "Healing In Progress (Plain)", image: "/images/HEALING%20in%20PROGRESS%20%28PLAIN%29%20.png" },
- { title: "Happy Dino Trio", image: "/images/Happy%20Dino%20Trio.png" },
- { title: "Happy Father\u2019S Day To", image: "/images/Happy%20Father%E2%80%99s%20Day%20to%20the%20Guy%20Who%20Always%20Knows%20a%20Shortcut.png" },
- { title: "Happy Father\u2019S Day To", image: "/images/Happy%20Father%E2%80%99s%20Day%20to%20the%20Guy%20Who%20Still%20Thinks%20He%E2%80%99s%20Funny.png" },
- { title: "Happy Father\u2019S Day To", image: "/images/Happy%20Father%E2%80%99s%20Day%20to%20the%20King%20of%20Dad%20Jokes.png" },
- { title: "Happy Father\u2019S Day To", image: "/images/Happy%20Father%E2%80%99s%20Day%20to%20the%20Original%20Superhero.png" },
- { title: "Harry Potter", image: "/images/Harry%20Potter.png" },
- { title: "Heaven And Havoc", image: "/images/Heaven%20and%20Havoc%20.png" },
- { title: "Hedgehog\u2019S Guide To Social", image: "/images/Hedgehog%E2%80%99s%20guide%20to%20social%20anxiety.png" },
- { title: "High Hound", image: "/images/High%20Hound.png" },
- { title: "Hippo Of Half\u2011Finished Projects", image: "/images/Hippo%20of%20Half%E2%80%91Finished%20Projects.png" },
- { title: "Home Is Where Mom", image: "/images/Home%20is%20where%20Mom%20is%20loved.png" },
- { title: "Home Is Wherever Mom", image: "/images/Home%20is%20wherever%20mom%20is.png" },
- { title: "Hypno Fusion Petal", image: "/images/Hypno%20Fusion%20Petal.png" },
- { title: "I Am Confident", image: "/images/I%20AM%20CONFIDENT.png" },
- { title: "I Am Strong", image: "/images/I%20Am%20Strong.png" },
- { title: "I Can\u2019T Fix Stupid,", image: "/images/I%20Can%E2%80%99t%20Fix%20Stupid%2C%20But%20I%20Can%20Fix%20Most%20Things.png" },
- { title: "I Don\u2019T Snore. I", image: "/images/I%20Don%E2%80%99t%20Snore.%20I%20Dream%20I%E2%80%99m%20a%20Motorcycle..png" },
- { title: "I Make Awesome Kids.", image: "/images/I%20Make%20Awesome%20Kids.%20You%E2%80%99re%20Welcome..png" },
- { title: "I Am The Storm", image: "/images/I%20am%20The%20Storm.png" },
- { title: "I Am Connected To", image: "/images/I%20am%20connected%20to%20the%20divine.png" },
- { title: "I Embody The Power", image: "/images/I%20embody%20the%20power%20of%20the%20ancients.png" },
- { title: "I Run On Coffee", image: "/images/I%20run%20on%20coffee%20and%20chaos.png" },
- { title: "I Survied To Many", image: "/images/I%20survied%20to%20many%20storms%20to%20be%20bothered%20by%20raindrops.png" },
- { title: "I Will Not Give", image: "/images/I%20will%20not%20give%20up%20my%20Power%21.png" },
- { title: "Inner Self Pic", image: "/images/Inner%20self%20pic.png" },
- { title: "Insane Rat", image: "/images/Insane%20Rat.png" },
- { title: "I\u2019M Not Arguing. I\u2019M", image: "/images/I%E2%80%99m%20Not%20Arguing.%20I%E2%80%99m%20Just%20Explaining%20Why%20I%E2%80%99m%20Right..png" },
- { title: "Kindness Bear \u2013 Be", image: "/images/Kindness%20Bear%20%E2%80%93%20Be%20Kind%2C%20Be%20Brave%20.png" },
- { title: "Leaving In 5 Minutes\u2026", image: "/images/Leaving%20in%205%20Minutes%E2%80%A6%20Not%20Really.png" },
- { title: "Light In The Sky", image: "/images/Light%20in%20the%20Sky.PNG" },
- { title: "Lightening Fights", image: "/images/Lightening%20Fights.PNG" },
- { title: "Lion Of Lost Tools", image: "/images/Lion%20of%20Lost%20Tools.png" },
- { title: "Live Free Image", image: "/images/Live%20Free%20Image.png" },
- { title: "Lizard Of Lawn Obsession", image: "/images/Lizard%20of%20lawn%20obsession.png" },
- { title: "Locked Dove", image: "/images/Locked%20Dove.png" },
- { title: "Lust And Loyalty", image: "/images/Lust%20and%20Loyalty.png" },
- { title: "My Dad Eats My", image: "/images/MY%20DAD%20EATS%20MY%20FRIES%20-%201.webp" },
- { title: "My Dads Super Power", image: "/images/MY%20DADS%20SUPER%20POWER.png" },
- { title: "Make Something New", image: "/images/Make%20something%20new.png" },
- { title: "Mama Needs Wine (Lucid", image: "/images/Mama%20Needs%20Wine%20%28Lucid-Yellow%29.png" },
- { title: "Mama Bear And Her", image: "/images/Mama%20bear%20and%20her%20cubs.png" },
- { title: "Mama Needs Wine And", image: "/images/Mama%20needs%20wine%20and%20survival.png" },
- { title: "Mentally At Home", image: "/images/Mentally%20at%20Home.png" },
- { title: "Messy Mom Life Fueled", image: "/images/Messy%20mom%20life%20fueled%20by%20faith.png" },
- { title: "Messy Mom Life Fueled", image: "/images/Messy%20mom%20life_%20fueled%20by%20faith.png" },
- { title: "Mideviel Image", image: "/images/Mideviel%20image.png" },
- { title: "Mindful Zen Bath", image: "/images/Mindful%20Zen%20Bath.png" },
- { title: "Mom The Original Sea", image: "/images/Mom%20The%20Original%20Sea.png" },
- { title: "Mom At 2 Percent", image: "/images/Mom%20at%202%20Percent.png" },
- { title: "Mom Boss Vibes In", image: "/images/Mom%20boss%20vibes%20in%20full%20force.png" },
- { title: "Mom Fuel And Toddler", image: "/images/Mom%20fuel%20and%20toddler%20chaos.png" },
- { title: "Mom Life In Full", image: "/images/Mom%20life%20in%20full%20swing.png" },
- { title: "Mom Life Fueled By", image: "/images/Mom%20life_%20fueled%20by%20love%20and%20coffee.png" },
- { title: "Mom, The Ultimate Search", image: "/images/Mom%2C%20the%20ultimate%20search%20engine.png" },
- { title: "Mom The Ultimate Search", image: "/images/Mom_%20the%20ultimate%20search%20engine.png" },
- { title: "Monkey Of Mental Load", image: "/images/Monkey%20of%20Mental%20Load%20Mayhem.webp" },
- { title: "Moose Of Miscommunication", image: "/images/Moose%20of%20Miscommunication.png" },
- { title: "Motherhood Chaos Fueled By", image: "/images/Motherhood%20chaos_%20fueled%20by%20love%20and%20coffee.png" },
- { title: "Motherhoodthe Toughest Job, Powered", image: "/images/Motherhoodthe%20Toughest%20Job%2C%20Powered%20by%20Love%20100X100%20-%201.png" },
- { title: "Mowing Grass Icon", image: "/images/Mowing%20Grass%20Icon.png" },
- { title: "My Give A Damn\u2019S", image: "/images/My%20Give%20A%20Damn%E2%80%99s%20Busted%20.webp" },
- { title: "My Give A Damn\u2019S", image: "/images/My%20Give%20a%20Damn%E2%80%99S%20Busted.png" },
- { title: "Mystical", image: "/images/Mystical.png" },
- { title: "Mythical Moon Castle", image: "/images/Mythical%20moon%20Castle.png" },
- { title: "Octopus Of Overcommitment 1", image: "/images/Octopus%20of%20Overcommitment%20-%201.png" },
- { title: "Octopus Of Overcommitment 2", image: "/images/Octopus%20of%20Overcommitment%202%20-%201.webp" },
- { title: "Octopus Of Overcommitment 2", image: "/images/Octopus%20of%20Overcommitment%202.png" },
- { title: "Octopus Of Overcommitment 2", image: "/images/Octopus%20of%20Overcommitment%202.webp" },
- { title: "Octopus Of Overcommitment", image: "/images/Octopus%20of%20Overcommitment.webp" },
- { title: "Octopus Overwhelmed With Responsibilities", image: "/images/Octopus%20overwhelmed%20with%20responsibilities.png" },
- { title: "One More Store", image: "/images/One%20More%20Store.webp" },
- { title: "Otter Of Overexplaining", image: "/images/Otter%20of%20Overexplaining.png" },
- { title: "Over It Owl 1", image: "/images/Over%20It%20Owl%20-%201.png" },
- { title: "Owl Of Overthinking", image: "/images/Owl%20of%20Overthinking.png" },
- { title: "Owl Of Overthinking", image: "/images/Owl%20of%20Overthinking.webp" },
- { title: "Peace Over Everything (Hippie)", image: "/images/PEACE%20over%20EVERYTHING%20%28HIPPIE%29.png" },
- { title: "Peace Over Everything (Plain)", image: "/images/PEACE%20over%20EVERYTHING%20%28PLAIN%29.png" },
- { title: "Peace Over Everything (Wave)", image: "/images/PEACE%20over%20EVERYTHING%20%28Wave%29.png" },
- { title: "Protect Your Peace (Plain)", image: "/images/PROTECT%20YOUR%20PEACE%20%28PLAIN%29.png" },
- { title: "Protect Your Peace (Wave)", image: "/images/PROTECT%20YOUR%20PEACE%20%28WAVE%29.png" },
- { title: "Protect Your Peace (Zen)", image: "/images/PROTECT%20YOUR%20PEACE%20%28ZEN%29%20.png" },
- { title: "Parenting Demon Mode", image: "/images/Parenting%20Demon%20Mode.png" },
- { title: "Pelican Of Over Passive", image: "/images/Pelican%20of%20over%20passive%20parenting%281%29.png" },
- { title: "Petals Of Power, Blades", image: "/images/Petals%20of%20Power%2C%20Blades%20of%20Truth.png" },
- { title: "Power Of Legends", image: "/images/Power%20of%20Legends.png" },
- { title: "Professional Snack Provider And", image: "/images/Professional%20snack%20provider%20and%20boo%20boo%20fixer.png" },
- { title: "Professional Snack Provider, Boo", image: "/images/Professional%20snack%20provider%2C%20boo%20boo%20fixer%202.png" },
- { title: "Promoted To Mom, Still", image: "/images/Promoted%20to%20mom%2C%20still%20figuring%20it%20out.png" },
- { title: "Protect Your Energy", image: "/images/Protect%20your%20energy.png" },
- { title: "Queen Mom Vibes And", image: "/images/Queen%20mom%20vibes%20and%20royal%20energy.png" },
- { title: "Read More Books (Colorful)", image: "/images/READ%20MORE%20BOOKS%20%28COLORFUL%29.png" },
- { title: "Read More Books (Purple)", image: "/images/READ%20MORE%20BOOKS%20%28PURPLE%29.png" },
- { title: "Raccoon In Perpetual Chaos", image: "/images/Raccoon%20in%20perpetual%20chaos.png" },
- { title: "Raccoon Of Remote Control", image: "/images/Raccoon%20of%20Remote%20Control%20Rage.png" },
- { title: "Rainbow Unicorn \u2013 Shine", image: "/images/Rainbow%20Unicorn%20%E2%80%93%20Shine%20Bright%21.png" },
- { title: "Reading Bunny", image: "/images/Reading%20Bunny.png" },
- { title: "Realms Of Wonder", image: "/images/Realms%20of%20Wonder.png" },
- { title: "Reclaiming Your Emotional Intuition", image: "/images/Reclaiming%20Your%20Emotional%20Intuition.png" },
- { title: "Sinners & Saints 1", image: "/images/SINNERS%20%26%20SAINTS%20%20-%201.png" },
- { title: "Sinners And Saints", image: "/images/SINNERS%20AND%20SAINTS.png" },
- { title: "Stay Calm (Blue,Green)", image: "/images/STAY%20CALM%20%28BLUE%2CGREEN%29.png" },
- { title: "Stay Calm (Colorful)", image: "/images/STAY%20CALM%20%28COLORFUL%29%20.png" },
- { title: "Stay Calm (Plain)", image: "/images/STAY%20CALM%20%28PLAIN%29.png" },
- { title: "Stfu I Got Kids!", image: "/images/STFU%20I%20GOT%20KIDS%21.png" },
- { title: "Stfu I Got Kids", image: "/images/STFU%20I%20Got%20Kids%201.png" },
- { title: "Sarcasm Level Expert", image: "/images/Sarcasm%20Level%20Expert.png" },
- { title: "Savage (Lion)", image: "/images/Savage%20%28Lion%29.png" },
- { title: "Sentimental Mother\u2019S", image: "/images/Sentimental%20Mother%E2%80%99s.png" },
- { title: "Serpent Of Silent Screaming", image: "/images/Serpent%20of%20Silent%20Screaming.png" },
- { title: "Serpent Of Silent Screaming", image: "/images/Serpent%20of%20Silent%20Screaming.webp" },
- { title: "She Believed, She Did", image: "/images/She%20believed%2C%20she%20did%20it%20all.png" },
- { title: "She Is Strength, Grace,", image: "/images/She%20is%20strength%2C%20grace%2C%20and%20savage.png" },
- { title: "Shooting Stars", image: "/images/Shooting%20Stars.png" },
- { title: "Silly Dolphins \u2013 Splash", image: "/images/Silly%20Dolphins%20%E2%80%93%20Splash%20into%20Fun.png" },
- { title: "Skull Head", image: "/images/Skull%20head.png" },
- { title: "Skunk Of Social Overstimulation", image: "/images/Skunk%20of%20Social%20Overstimulation.png" },
- { title: "Skunk Of Social Overstimulation", image: "/images/Skunk%20of%20Social%20Overstimulation.webp" },
- { title: "Sloth In Procrastination Mode", image: "/images/Sloth%20in%20procrastination%20mode.png" },
- { title: "Snail Of Slow\u2011Burn Resentment", image: "/images/Snail%20of%20Slow%E2%80%91Burn%20Resentment.png" },
- { title: "Snail Of Slow\u2011Burn Resentment", image: "/images/Snail%20of%20Slow%E2%80%91Burn%20Resentment.webp" },
- { title: "Space Octopus \u2013 Reach", image: "/images/Space%20Octopus%20%E2%80%93%20Reach%20for%20the%20Stars%21.png" },
- { title: "Spectrum Cry", image: "/images/Spectrum%20Cry.png" },
- { title: "Spiral Dreamscape", image: "/images/Spiral%20Dreamscape.png" },
- { title: "Spirit Of The Forest", image: "/images/Spirit%20of%20the%20Forest.png" },
- { title: "Squirrel Of Scattered Sanity", image: "/images/Squirrel%20of%20Scattered%20Sanity.png" },
- { title: "Squirrel Of Scattered Sanity1", image: "/images/Squirrel%20of%20Scattered%20sanity1.png" },
- { title: "Squirrel Of Chaotic Energy", image: "/images/Squirrel%20of%20chaotic%20energy.png" },
- { title: "Stardust And Dreams", image: "/images/Stardust%20and%20Dreams.png" },
- { title: "Starlight And Shadow", image: "/images/Starlight%20and%20Shadow.png" },
- { title: "Stay Cool (Orange)", image: "/images/Stay%20Cool%20%28ORANGE%29.png" },
- { title: "Stay Cool (Purple)", image: "/images/Stay%20Cool%20%28PURPLE%29.png" },
- { title: "Strong, Kind, Fierce Mom", image: "/images/Strong%2C%20kind%2C%20fierce%20mom%20power.png" },
- { title: "Sunami House", image: "/images/Sunami%20House.png" },
- { title: "Superhero Mom In Crayon", image: "/images/Superhero%20mom%20in%20crayon.png" },
- { title: "Superheroes Wear Aprons Too", image: "/images/Superheroes%20wear%20aprons%20too.png" },
- { title: "Supermom Love, Chaos, And", image: "/images/Supermom_%20love%2C%20chaos%2C%20and%20cozy%20moments.png" },
- { title: "Temptation & Betrayal", image: "/images/TEMPTATION%20%26%20BETRAYAL.png" },
- { title: "Take The Leap", image: "/images/Take%20The%20Leap.png" },
- { title: "Thanks For Teaching Me", image: "/images/Thanks%20for%20Teaching%20Me%20Everything%E2%80%A6%20Except%20How%20to%20Be%20Quiet.png" },
- { title: "They See Me Mowin", image: "/images/They%20See%20Me%20Mowin.png" },
- { title: "Think Rich", image: "/images/Think%20Rich%20.png" },
- { title: "Tiger Of Time Blindness", image: "/images/Tiger%20of%20Time-Blindness.png" },
- { title: "Tiger Of Time\u2011Blindness", image: "/images/Tiger%20of%20Time%E2%80%91Blindness.webp" },
- { title: "Timeless Treasures", image: "/images/Timeless%20Treasures.png" },
- { title: "Toddler Tornado", image: "/images/Toddler%20Tornado.png" },
- { title: "Tower Of Light", image: "/images/Tower%20of%20Light%20.png" },
- { title: "Triangle Burst", image: "/images/Triangle%20Burst.png" },
- { title: "True Power", image: "/images/True%20Power.PNG" },
- { title: "Trust The Process", image: "/images/Trust%20the%20Process.png" },
- { title: "Unfiltered Mama", image: "/images/Unfiltered%20Mama.png" },
- { title: "Unicorn Queen", image: "/images/Unicorn%20Queen.png" },
- { title: "Unicorn Of Unpaid Emotional", image: "/images/Unicorn%20of%20Unpaid%20Emotional%20Labor.png" },
- { title: "Unicorn Of Unpaid Emotional", image: "/images/Unicorn%20of%20unpaid%20emotional%20labor%20.png" },
- { title: "Unshaken By Shadows", image: "/images/Unshaken%20by%20Shadows.png" },
- { title: "Virtue And Vice", image: "/images/Virtue%20and%20Vice%20%20.png" },
- { title: "Vivid Eye", image: "/images/Vivid%20Eye.png" },
- { title: "When Life Gets Ruff", image: "/images/WHEN%20LIFE%20GETS%20RUFF%20JUST%20PAWS%20AND%20LIGHT%20UP%21.png" },
- { title: "Who Did This", image: "/images/WHO%20DID%20THIS%20.png" },
- { title: "Who Did This", image: "/images/WHO%20DID%20THIS%20.webp" },
- { title: "Well Shit", image: "/images/Well%20Shit.png" },
- { title: "Well Shit", image: "/images/Well%20Shit.webp" },
- { title: "When Life Gets Ruff", image: "/images/When%20life%20gets%20ruff%20just%20paws%20and%20light%20up.png" },
- { title: "Wild Ember Flower", image: "/images/Wild%20Ember%20Flower.png" },
- { title: "Woman In Rain", image: "/images/Woman%20in%20rain.png" },
- { title: "Wonder And Will", image: "/images/Wonder%20and%20Will.png" },
- { title: "Wonder Flows Without End", image: "/images/Wonder%20flows%20without%20end.png" },
- { title: "World\u2019S Okayest Dad (But", image: "/images/World%E2%80%99s%20Okayest%20Dad%20%28But%20Still%20a%20Legend%29.png" },
- { title: "You\u2019Re Grill Ious, Dad!", image: "/images/You%E2%80%99re%20Grill-ious%2C%20Dad%21.png" },
- { title: "You\u2019Re The Coolest Dad", image: "/images/You%E2%80%99re%20the%20Coolest%20Dad%20This%20Side%20of%20the%20Grill.png" },
- { title: "Zero Fucks Given", image: "/images/Zero%20Fucks%20Given%20.png" },
- { title: "Zero Fucks Given", image: "/images/Zero%20Fucks%20Given.webp" },
- { title: "Zodiac Women", image: "/images/Zodiac%20Women.png" },
- { title: "Behind Every Great Kid", image: "/images/_BEHIND%20EVERY%20GREAT%20KID.png" },
- { title: "Beetlejuice Its Showtime (Green)", image: "/images/beetlejuice%20its%20showtime%20%28green%29.png" },
- { title: "Beetljuice Its Showtime (Green", image: "/images/beetljuice%20Its%20showtime%20%28green%20orange%29.png" },
- { title: "Chines Lunar Girl", image: "/images/chines-lunar%20girl.png" },
- { title: "Chinese Lunar Day", image: "/images/chinese%20lunar%20day.png" },
- { title: "Chinese Cherry Blossom Tiger", image: "/images/chinese-%20cherry%20blossom%20tiger.png" },
- { title: "Chinese Girl Print", image: "/images/chinese-%20girl%20print.png" },
- { title: "Chinese Goldfish Flowers", image: "/images/chinese-%20goldfish%20flowers.png" },
- { title: "Chinese Tiger", image: "/images/chinese-%20tiger.png" },
- { title: "Chinese Tiger Master", image: "/images/chinese-tiger%20master.png" },
- { title: "Faith Hope Cure Print", image: "/images/faith%20hope%20cure%20print.png" },
- { title: "Flamingo Flock You Cancer", image: "/images/flamingo-flock%20you%20cancer%20print.png" },
- { title: "Ghost Heart Print", image: "/images/ghost%20heart%20print.png" },
- { title: "Give Cance The Boot", image: "/images/give%20cance%20the%20boot%20print.png" },
- { title: "Her Fight Is My", image: "/images/her%20fight%20is%20my%20fight.png" },
- { title: "Lunar Dragon", image: "/images/lunar-%20dragon.png" },
- { title: "Lunar Gold Fish", image: "/images/lunar-%20gold%20fish.png" },
- { title: "Lunar Hats", image: "/images/lunar-%20hats.png" },
- { title: "Manifesting", image: "/images/manifesting.png" },
- { title: "Open Minded", image: "/images/open%20minded.png" },
- { title: "Pink Fight", image: "/images/pink%20fight%20.png" },
- { title: "Running On Chaos And", image: "/images/running%20on%20chaos%20and%20moonlight.png" },
- { title: "Scare Away Breast Cancer", image: "/images/scare%20away%20breast%20cancer.png" },
- { title: "Soft Life", image: "/images/soft%20life.png" },
- { title: "Stfu I Got Kids", image: "/images/stfu_i_got_kids.png" },
- { title: "Support, Admire, Honor", image: "/images/support%2C%20admire%2C%20honor.png" },
- { title: "Tackle Cancer Football", image: "/images/tackle%20cancer%20football.png" },
- { title: "Valentine Ghost Be My", image: "/images/valentine-ghost%20be%20my%20boo.png" },
- { title: "Warrior", image: "/images/warrior.png" },
- { title: "\u201cMy Dad\u2019S Superpower Is", image: "/images/%E2%80%9CMy%20Dad%E2%80%99s%20Superpower%20Is%20Losing%20His%20Keys.%E2%80%9D.png" },
- { title: "\u201cYou Never Left \u2014", image: "/images/%E2%80%9CYou%20never%20left%20%E2%80%94%20I%20just%20stopped%20listening.%20I%20hear%20you%20now.%E2%80%9D.png" },
- { title: "\u201cYou\u2019Re Allowed To Be", image: "/images/%E2%80%9CYou%E2%80%99re%20allowed%20to%20be%20here.%E2%80%9DI%E2%80%99m%20not%20afraid%20of%20you.%E2%80%9D%20You%20can%20take%20your%20time.%E2%80%9D%28%20using%20a%20triple%20image%20using%20dull%20colors%29.png" }
-];
-export default function App(){
-  const [q,setQ]=useState("");
-  const [sel,setSel]=useState(null);
-  const list = designs.filter(d=>d.title.toLowerCase().includes(q.toLowerCase()));
+const STORE_URL = "https://shop.mimiscozycorner.com/";
+
+// This will be replaced by the build script - placeholder for now
+// The actual file list will be injected by the python script below that uses real files
+
+const imageModules = import.meta.glob("/public/images/*.{png,jpg,jpeg,webp,PNG,JPG,WEBP}", { 
+  eager: true, 
+  as: "url" 
+}) as Record<string, string>;
+
+type Design = { title: string; image: string };
+
+const designs: Design[] = Object.entries(imageModules)
+  .filter(([p]) => {
+    const lower = p.toLowerCase();
+    return !lower.includes("logo") && !lower.includes(".htm") && !lower.includes("zip") && !lower.includes("business");
+  })
+  .map(([path, url]) => {
+    const fileName = path.split("/").pop() || "";
+    const name = fileName.replace(/\.[^/.]+$/, "").replace(/[_-]/g, " ").trim();
+    const title = name.split(" ").slice(0, 4).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ");
+    const cleanUrl = "/images/" + encodeURIComponent(fileName);
+    return { title: title || "Cozy Design", image: cleanUrl };
+  });
+
+export default function App() {
+  const [q, setQ] = useState("");
+  const [sel, setSel] = useState<Design | null>(null);
+  const list = designs.filter(d => d.title.toLowerCase().includes(q.toLowerCase()));
+
   return (
-    <div style={{background:"#fffaf5",minHeight:"100vh",fontFamily:"system-ui"}}>
-      <header style={{padding:"20px",textAlign:"center",background:"white",borderBottom:"2px solid #ff69b4",position:"sticky",top:0,zIndex:10}}>
-        <h1 style={{color:"#a2006d",margin:0}}>Mimi's Cozy Corner</h1>
-        <p>{{list.length}} Designs - You Choose The Product</p>
-        <input placeholder="Search..." value={q} onChange={e=>setQ(e.target.value)} style={{padding:"10px 20px",borderRadius:"20px",border:"1px solid #ffb6d9",width:"300px",marginTop:"10px"}}/>
+    <div style={{ background: "#fffaf5", minHeight: "100vh", fontFamily: "system-ui" }}>
+      <header style={{ padding: "20px", textAlign: "center", background: "white", borderBottom: "2px solid #ff69b4", position: "sticky", top: 0, zIndex: 10 }}>
+        <h1 style={{ color: "#a2006d", margin: 0, fontSize: "32px", fontWeight: 900 }}>Mimi's Cozy Corner</h1>
+        <p>{list.length} Designs - You Choose The Product</p>
+        <input placeholder="Search..." value={q} onChange={e => setQ(e.target.value)} style={{ padding: "10px 20px", borderRadius: "20px", border: "1px solid #ffb6d9", width: "300px", marginTop: "10px" }} />
+        <div style={{ marginTop: "10px" }}>
+          <a href={STORE_URL} target="_blank" style={{ color: "#a2006d", fontWeight: 700, fontSize: "13px" }}>shop.mimiscozycorner.com</a>
+        </div>
       </header>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:"16px",padding:"20px",maxWidth:"1300px",margin:"0 auto"}}>
-        {list.map((d,i)=>(
-          <div key={i} onClick={()=>setSel(d)} style={{background:"white",borderRadius:"16px",overflow:"hidden",boxShadow:"0 2px 8px rgba(0,0,0,0.08)",cursor:"pointer"}}>
-            <div style={{background:"#fef2f8",aspectRatio:"1"}}>
-              <img src={d.image} alt={d.title} style={{width:"100%",height:"100%",objectFit:"contain",padding:"8px"}} loading="lazy" onError={(e)=>e.currentTarget.parentElement.parentElement.style.display="none"} />
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "16px", padding: "20px", maxWidth: "1300px", margin: "0 auto" }}>
+        {list.map((d, i) => (
+          <div key={i} onClick={() => setSel(d)} style={{ background: "white", borderRadius: "16px", overflow: "hidden", boxShadow: "0 2px 8px rgba(0,0,0,0.08)", cursor: "pointer" }}>
+            <div style={{ background: "#fef2f8", aspectRatio: "1" }}>
+              <img src={d.image} alt={d.title} style={{ width: "100%", height: "100%", objectFit: "contain", padding: "8px" }} loading="lazy" onError={(e) => { (e.currentTarget as HTMLImageElement).parentElement!.parentElement!.style.display = "none"; }} />
             </div>
-            <div style={{padding:"10px"}}>
-              <div style={{fontWeight:600,fontSize:"13px",height:"32px",overflow:"hidden"}}>{{d.title}}</div>
-              <div style={{marginTop:"8px",background:"#a2006d",color:"white",textAlign:"center",padding:"8px",borderRadius:"8px",fontSize:"11px",fontWeight:800}}>CHOOSE PRODUCT</div>
+            <div style={{ padding: "10px" }}>
+              <div style={{ fontWeight: 600, fontSize: "13px", height: "32px", overflow: "hidden" }}>{d.title}</div>
+              <div style={{ marginTop: "8px", background: "#a2006d", color: "white", textAlign: "center", padding: "8px", borderRadius: "8px", fontSize: "11px", fontWeight: 800 }}>CHOOSE PRODUCT</div>
             </div>
           </div>
         ))}
       </div>
+
       {sel && (
-        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.6)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:100,padding:"20px"}} onClick={()=>setSel(null)}>
-          <div style={{background:"white",borderRadius:"20px",maxWidth:"480px",width:"100%",overflow:"hidden"}} onClick={e=>e.stopPropagation()}>
-            <img src={sel.image} style={{width:"100%",maxHeight:"380px",objectFit:"contain",background:"#fef2f8"}}/>
-            <div style={{padding:"18px"}}>
-              <h3 style={{margin:"0 0 8px"}}>{{sel.title}}</h3>
-              <a href={STORE} target="_blank" style={{display:"block",padding:"12px",background:"#a2006d",color:"white",textAlign:"center",borderRadius:"10px",fontWeight:800,textDecoration:"none"}}>SHOP AT shop.mimiscozycorner.com</a>
-              <button onClick={()=>setSel(null)} style={{width:"100%",marginTop:"8px",padding:"8px",border:"none",background:"#eee",borderRadius:"8px"}}>Close</button>
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100, padding: "20px" }} onClick={() => setSel(null)}>
+          <div style={{ background: "white", borderRadius: "20px", maxWidth: "480px", width: "100%", overflow: "hidden" }} onClick={e => e.stopPropagation()}>
+            <img src={sel.image} style={{ width: "100%", maxHeight: "380px", objectFit: "contain", background: "#fef2f8" }} alt={sel.title} />
+            <div style={{ padding: "18px" }}>
+              <h3 style={{ margin: "0 0 8px" }}>{sel.title}</h3>
+              <p style={{ fontSize: "13px", opacity: 0.6 }}>Choose your product on our official shop:</p>
+              <a href={STORE_URL} target="_blank" style={{ display: "block", padding: "12px", background: "#a2006d", color: "white", textAlign: "center", borderRadius: "10px", fontWeight: 800, textDecoration: "none", marginTop: "12px" }}>SHOP AT shop.mimiscozycorner.com</a>
+              <button onClick={() => setSel(null)} style={{ width: "100%", marginTop: "8px", padding: "8px", border: "none", background: "#eee", borderRadius: "8px", cursor: "pointer" }}>Close</button>
             </div>
           </div>
         </div>
       )}
+
+      <footer style={{ textAlign: "center", padding: "30px", fontSize: "11px", opacity: 0.5 }}>
+        {designs.length} Designs • shop.mimiscozycorner.com
+      </footer>
     </div>
   );
 }
