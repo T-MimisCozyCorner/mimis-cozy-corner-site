@@ -1,182 +1,61 @@
-import { BrowserRouter, Routes, Route, Link, useNavigate } from 'react-router-dom'
-
-const SOCIALS = [
-  { name: "Instagram", url: "https://instagram.com/mimis_corner_co", icon: "📷" },
-  { name: "TikTok", url: "https://tiktok.com/@mimis_corner_co", icon: "🎵" },
-  { name: "Facebook", url: "https://facebook.com/tonya.stewart.566", icon: "👥" },
-  { name: "Shop", url: "/products", icon: "🛍️" },
+import React, { useState, useMemo } from "react"
+type Product = { id:number; name:string; price:number; collection:string; image:string }
+const COLLECTIONS = ["All","Western","Trucker Hats","Bags","Fall","Graphic Tees","Hoodies","Shirts","Sweatshirts","Outerwear","Jewelry","Footwear","Bottoms","Accessories","Sale","New"]
+const PRODUCTS: Product[] = [
+ { id: 1, name: 'Best Dad By Par', price: 18, collection: 'Graphic Tees', image: `/images/Best%20Dad%20By%20Par.png` },
+ { id: 2, name: 'Dad Because Grandpa Wasn’T Cool Enough', price: 19, collection: 'Graphic Tees', image: `/images/Dad%20Because%20Grandpa%20Wasn%E2%80%99t%20Cool%20Enough.png` },
+ { id: 3, name: 'Dad Bod Built By Bbq And Bad Decisions', price: 20, collection: 'Graphic Tees', image: `/images/Dad%20Bod%20Built%20by%20BBQ%20and%20Bad%20Decisions.png` },
+ { id: 4, name: 'Dad Fueling The Family With Dad Jokes & Coffee', price: 21, collection: 'Graphic Tees', image: `/images/Dad%20Fueling%20the%20Family%20With%20Dad%20Jokes%20%26%20Coffee.png` },
+ { id: 5, name: 'Dad Jokes Are How Eye Roll', price: 22, collection: 'Graphic Tees', image: `/images/Dad%20Jokes%20Are%20How%20Eye%20Roll.png` },
+ { id: 6, name: 'Dad Life Powered By Coffee And Patience', price: 23, collection: 'Graphic Tees', image: `/images/Dad%20Life%20Powered%20by%20Coffee%20and%20Patience.png` },
+ { id: 7, name: 'Dad Master Of The Remote Control', price: 24, collection: 'Graphic Tees', image: `/images/Dad%20Master%20of%20the%20Remote%20Control.png` },
+ { id: 8, name: 'Dad Professional Thermostat Protector', price: 25, collection: 'Graphic Tees', image: `/images/Dad%20Professional%20Thermostat%20Protector.png` },
+ { id: 9, name: 'Dad Sacrificing Sleep Since Forever', price: 26, collection: 'Graphic Tees', image: `/images/Dad%20Sacrificing%20Sleep%20Since%20Forever.png` },
+ { id: 10, name: 'Dad Tax Taking A Piece Of Your Snacks Since Day One', price: 27, collection: 'Graphic Tees', image: `/images/Dad%20Tax%20Taking%20a%20Piece%20of%20Your%20Snacks%20Since%20Day%20One.png` },
+ { id: 11, name: 'Dad The Human Instructions Nobody Reads', price: 28, collection: 'Graphic Tees', image: `/images/Dad%20The%20Human%20Instructions%20Nobody%20Reads.png` },
+ { id: 12, name: 'Dad’S Bbq Rule #1 If I’M Cooking, Stay Out Of My Kitchen', price: 29, collection: 'Graphic Tees', image: `/images/Dad%E2%80%99s%20BBQ%20Rule%20%231%20If%20I%E2%80%99m%20Cooking%2C%20Stay%20Out%20of%20My%20Kitchen.png` },
+ { id: 13, name: 'Dad’S Chair Touch It And You’Re Grounded', price: 30, collection: 'Graphic Tees', image: `/images/Dad%E2%80%99s%20Chair%20Touch%20It%20and%20You%E2%80%99re%20Grounded.png` },
+ { id: 14, name: 'Dad’S Cooking Timer “I’Ll Know When It’S Done”', price: 31, collection: 'Graphic Tees', image: `/images/Dad%E2%80%99s%20Cooking%20Timer%20%E2%80%9CI%E2%80%99ll%20Know%20When%20It%E2%80%99s%20Done%E2%80%9D.png` },
+ { id: 15, name: 'Dad’S Driving Rules Silence Means I Missed The Turn', price: 32, collection: 'Graphic Tees', image: `/images/Dad%E2%80%99s%20Driving%20Rules%20Silence%20Means%20I%20Missed%20the%20Turn.png` },
+ { id: 16, name: 'Dad’S Favorite Child Depends On Who Has Snacks', price: 33, collection: 'Graphic Tees', image: `/images/Dad%E2%80%99s%20Favorite%20Child%20Depends%20on%20Who%20Has%20Snacks.png` },
+ { id: 17, name: 'Dad’S Favorite Exercise Walking To The Fridge', price: 34, collection: 'Graphic Tees', image: `/images/Dad%E2%80%99s%20Favorite%20Exercise%20Walking%20to%20the%20Fridge.png` },
+ { id: 18, name: 'Dad’S Garage My Tools, My Rules', price: 35, collection: 'Graphic Tees', image: `/images/Dad%E2%80%99s%20Garage%20My%20Tools%2C%20My%20Rules.png` },
+ { id: 19, name: 'Dad’S Garage Where Projects Go To Never Be Finished', price: 36, collection: 'Graphic Tees', image: `/images/Dad%E2%80%99s%20Garage%20Where%20Projects%20Go%20to%20Never%20Be%20Finished.png` },
+ { id: 20, name: 'Dad’S Gas Station Stop Somehow Costs $47 Every Time', price: 37, collection: 'Graphic Tees', image: `/images/Dad%E2%80%99s%20Gas%20Station%20Stop%20Somehow%20Costs%20%2447%20Every%20Time.png` },
+ { id: 21, name: 'Dad’S Grill Schedule Burnt Outside, Raw Inside, Full Confidence', price: 38, collection: 'Graphic Tees', image: `/images/Dad%E2%80%99s%20Grill%20Schedule%20Burnt%20Outside%2C%20Raw%20Inside%2C%20Full%20Confidence.png` },
+ { id: 22, name: 'Dad’S Grocery Store Mission Go In For One Thing, Leave With 37 Snacks', price: 39, collection: 'Graphic Tees', image: `/images/Dad%E2%80%99s%20Grocery%20Store%20Mission%20Go%20In%20for%20One%20Thing%2C%20Leave%20With%2037%20Snacks.png` },
+ { id: 23, name: 'Dad’S Hearing Works Selectively', price: 40, collection: 'Graphic Tees', image: `/images/Dad%E2%80%99s%20Hearing%20Works%20Selectively.png` },
+ { id: 24, name: 'Dad’S Lawn Rules Stripes Matter More Than Feelings', price: 41, collection: 'Graphic Tees', image: `/images/Dad%E2%80%99s%20Lawn%20Rules%20Stripes%20Matter%20More%20Than%20Feelings.png` },
+ { id: 25, name: 'Dad’S Nap The Most Protected Event In The House', price: 42, collection: 'Graphic Tees', image: `/images/Dad%E2%80%99s%20Nap%20The%20Most%20Protected%20Event%20in%20the%20House.png` },
+ { id: 26, name: 'Dad’S Official Language Grunts, Sighs & Dad Jokes', price: 43, collection: 'Graphic Tees', image: `/images/Dad%E2%80%99s%20Official%20Language%20Grunts%2C%20Sighs%20%26%20Dad%20Jokes.png` },
+ { id: 27, name: 'Dad’S Remote Control Rights Nobody Else Touches It', price: 44, collection: 'Graphic Tees', image: `/images/Dad%E2%80%99s%20Remote%20Control%20Rights%20Nobody%20Else%20Touches%20It.png` },
+ { id: 28, name: 'Dad’S Snack Stash Hidden Better Than Government Secrets', price: 45, collection: 'Graphic Tees', image: `/images/Dad%E2%80%99s%20Snack%20Stash%20Hidden%20Better%20Than%20Government%20Secrets.png` },
+ { id: 29, name: 'Dad’S Texting Style One Word Replies & Zero Punctuation', price: 46, collection: 'Graphic Tees', image: `/images/Dad%E2%80%99s%20Texting%20Style%20One%20Word%20Replies%20%26%20Zero%20Punctuation.png` },
+ { id: 30, name: 'Dad’S Toolbox Full Of Tools He’Ll Never Let You Borrow', price: 47, collection: 'Graphic Tees', image: `/images/Dad%E2%80%99s%20Toolbox%20Full%20of%20Tools%20He%E2%80%99ll%20Never%20Let%20You%20Borrow.png` },
+ { id: 31, name: 'Dad’S Universal Fix “Put Some Duct Tape On It”', price: 48, collection: 'Graphic Tees', image: `/images/Dad%E2%80%99s%20Universal%20Fix%20%E2%80%9CPut%20Some%20Duct%20Tape%20On%20It%E2%80%9D.png` },
+ { id: 32, name: 'Dad’S Vacation Packing List 14 Cords, 2 Coolers & Zero Shirts', price: 49, collection: 'Graphic Tees', image: `/images/Dad%E2%80%99s%20Vacation%20Packing%20List%2014%20Cords%2C%202%20Coolers%20%26%20Zero%20Shirts.png` },
+ { id: 33, name: 'Dad’S Wallet Opens Faster At The Hardware Store', price: 50, collection: 'Graphic Tees', image: `/images/Dad%E2%80%99s%20Wallet%20Opens%20Faster%20at%20the%20Hardware%20Store.png` },
+ { id: 34, name: 'Dad’S Weather Forecast “Yep… It’S Hot Outside”', price: 51, collection: 'Graphic Tees', image: `/images/Dad%E2%80%99s%20Weather%20Forecast%20%E2%80%9CYep%E2%80%A6%20It%E2%80%99s%20Hot%20Outside%E2%80%9D.png` },
+ { id: 35, name: 'Happy Father’S Day To The Guy Who Always Knows A Shortcut', price: 52, collection: 'Graphic Tees', image: `/images/Happy%20Father%E2%80%99s%20Day%20to%20the%20Guy%20Who%20Always%20Knows%20a%20Shortcut.png` },
+ { id: 36, name: 'Happy Father’S Day To The Guy Who Still Thinks He’S Funny', price: 53, collection: 'Graphic Tees', image: `/images/Happy%20Father%E2%80%99s%20Day%20to%20the%20Guy%20Who%20Still%20Thinks%20He%E2%80%99s%20Funny.png` },
+ { id: 37, name: 'Happy Father’S Day To The King Of Dad Jokes', price: 54, collection: 'Graphic Tees', image: `/images/Happy%20Father%E2%80%99s%20Day%20to%20the%20King%20of%20Dad%20Jokes.png` },
+ { id: 38, name: 'Happy Father’S Day To The Original Superhero', price: 55, collection: 'Graphic Tees', image: `/images/Happy%20Father%E2%80%99s%20Day%20to%20the%20Original%20Superhero.png` },
+ { id: 39, name: 'I Can’T Fix Stupid, But I Can Fix Most Things', price: 56, collection: 'Graphic Tees', image: `/images/I%20Can%E2%80%99t%20Fix%20Stupid%2C%20But%20I%20Can%20Fix%20Most%20Things.png` },
+ { id: 40, name: 'I Don’T Snore. I Dream I’M A Motorcycle.', price: 57, collection: 'Graphic Tees', image: `/images/I%20Don%E2%80%99t%20Snore.%20I%20Dream%20I%E2%80%99m%20a%20Motorcycle..png` },
+ { id: 41, name: 'I Make Awesome Kids. You’Re Welcome.', price: 58, collection: 'Graphic Tees', image: `/images/I%20Make%20Awesome%20Kids.%20You%E2%80%99re%20Welcome..png` },
+ { id: 42, name: 'I’M Not Arguing. I’M Just Explaining Why I’M Right.', price: 59, collection: 'Graphic Tees', image: `/images/I%E2%80%99m%20Not%20Arguing.%20I%E2%80%99m%20Just%20Explaining%20Why%20I%E2%80%99m%20Right..png` },
+ { id: 43, name: 'Thanks For Teaching Me Everything… Except How To Be Quiet', price: 18, collection: 'Graphic Tees', image: `/images/Thanks%20for%20Teaching%20Me%20Everything%E2%80%A6%20Except%20How%20to%20Be%20Quiet.png` },
+ { id: 44, name: 'World’S Okayest Dad (But Still A Legend)', price: 19, collection: 'Graphic Tees', image: `/images/World%E2%80%99s%20Okayest%20Dad%20%28But%20Still%20a%20Legend%29.png` },
+ { id: 45, name: 'You’Re Grill Ious, Dad!', price: 20, collection: 'Graphic Tees', image: `/images/You%E2%80%99re%20Grill-ious%2C%20Dad%21.png` },
+ { id: 46, name: 'You’Re The Coolest Dad This Side Of The Grill', price: 21, collection: 'Graphic Tees', image: `/images/You%E2%80%99re%20the%20Coolest%20Dad%20This%20Side%20of%20the%20Grill.png` },
+ { id: 47, name: 'Mimis Cozy Corner White Logo', price: 22, collection: 'Graphic Tees', image: `/images/mimis_cozy_corner_White%20logo.webp` },
+ { id: 48, name: 'Mimis Cozy Corner Ad Asset Youtube', price: 23, collection: 'Graphic Tees', image: `/images/mimis_cozy_corner_ad_asset-YouTube.png` },
+ { id: 49, name: 'Mimis Cozy Corner Magenta', price: 24, collection: 'Graphic Tees', image: `/images/mimis_cozy_corner_magenta.webp` },
 ]
-
-const BLUEPRINTS = [
-  { id: "saas", name: "SaaS Starter", desc: "Complete SaaS boilerplate - Auth, Stripe, DB, Dashboard", price: 97, badge: "Most Popular", img: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=400", includes: "Auth + Stripe + DB + Dashboard" },
-  { id: "ecom", name: "Ecom Kit", desc: "Shopify-ready storefront with admin panel and payments", price: 67, badge: "", img: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400", includes: "Storefront + Admin + Payments" },
-  { id: "atlas", name: "Atlas Core", desc: "Atlas Core - Your AI workforce with 100 prompts and 5 agents", price: 147, badge: "AI Agent OS", img: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400", includes: "100 prompts + 5 agents + OS" },
-  { id: "ads", name: "Creative Ads Pack", desc: "50+ Canva ad templates including La Tambora - Fully editable", price: 25, badge: "La Tambora Inside", img: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400", includes: "50 templates + Canva link" },
-  { id: "tools", name: "Digital Tools Stack", desc: "10 Landing pages, 3 funnels, lead magnets, email system", price: 47, badge: "", img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400", includes: "10 pages + 3 funnels + Leads" },
-  { id: "factory", name: "Product Factory", desc: "Idea to product in 24h - Complete build and scale system", price: 197, badge: "New", img: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400", includes: "24h Build System + Scale" },
-  { id: "bundle", name: "Atlas OS Bundle", desc: "ALL 6 blueprints + factory access + 1:1 support + lifetime updates", price: 497, badge: "Best Value", img: "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=400", includes: "ALL 6 + Factory + 1:1 + Lifetime" },
-]
-
-function Header() {
-  return (
-    <header style={{ position: "sticky", top: 0, zIndex: 100, background: "white", borderBottom: "2px solid #BC13FE20", padding: "12px 24px", display: "flex", justifyContent: "space-between", alignItems: "center", boxShadow: "0 2px 20px #BC13FE10" }}>
-      <Link to="/" style={{ fontWeight: 900, fontSize: "22px", textDecoration: "none", color: "#0a0a0a", textShadow: "0 0 10px #BC13FE40" }}>Mimis Cozy Corner • Atlas OS</Link>
-      <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
-        <nav style={{ display: "flex", gap: "16px" }}>
-          <Link to="/blueprints" style={{ color: "#0a0a0a", textDecoration: "none", fontWeight: 700 }}>Blueprints</Link>
-          <Link to="/tools" style={{ color: "#0a0a0a", textDecoration: "none", fontWeight: 700 }}>Tools</Link>
-          <Link to="/products" style={{ color: "#0a0a0a", textDecoration: "none", fontWeight: 700 }}>Products</Link>
-          <Link to="/factory" style={{ color: "#0a0a0a", textDecoration: "none", fontWeight: 700 }}>Factory</Link>
-        </nav>
-        <div style={{ display: "flex", gap: "8px", borderLeft: "1px solid #eee", paddingLeft: "12px" }}>
-          {SOCIALS.map(s => <a key={s.name} href={s.url} target="_blank" style={{ textDecoration: "none", fontSize: "18px" }}>{s.icon}</a>)}
-        </div>
-      </div>
-    </header>
-  )
-}
-
-function Page({ title, subtitle, children }: any) {
-  return (
-    <div style={{ background: "white", minHeight: "100vh" }}>
-      <div style={{ padding: "50px 24px 20px", maxWidth: "1200px", margin: "0 auto" }}>
-        <h1 style={{ color: "#BC13FE", fontSize: "44px", fontWeight: 900, margin: "0 0 12px", textShadow: "0 0 15px #BC13FE" }}>{title}</h1>
-        {subtitle && <p style={{ color: "#666", fontSize: "18px", margin: 0 }}>{subtitle}</p>}
-      </div>
-      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "20px 24px 80px" }}>{children}</div>
-    </div>
-  )
-}
-
-function Home() {
-  const nav = useNavigate()
-  return (
-    <Page title="284 Designs + 7 Blueprints" subtitle="Mimis Cozy Corner + Atlas OS - All visuals, products, socials linked">
-      <div style={{ display: "grid", gap: "24px" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
-          <div style={{ background: "#0a0a0a", color: "white", padding: "28px", borderRadius: "20px", border: "2px solid #BC13FE" }}>
-            <h2 style={{ color: "#BC13FE", marginTop: 0 }}>BUDGET BUSTER</h2>
-            <p>3 Tees for $55 = $18.33 each | 5 for $89 | Bundle $497</p>
-            <p style={{ fontSize: "13px", opacity: 0.8 }}>Free shipping over $50. 4 payments of $6.25. Rochester POD - Custom One Online + AlphaGraphics.</p>
-          </div>
-          <div style={{ background: "linear-gradient(135deg, #BC13FE20, #00FFF720)", padding: "28px", borderRadius: "20px", border: "2px solid #BC13FE40" }}>
-            <h3 style={{ marginTop: 0 }}>Atlas OS Visuals Linked</h3>
-            <p style={{ fontSize: "14px" }}>All 7 blueprints with images, 6 tools with colors, Factory pipeline, Ads with La Tambora</p>
-            <div style={{ display: "flex", gap: "8px", marginTop: "12px" }}>{SOCIALS.map(s => <a key={s.name} href={s.url} style={{ background: "white", padding: "6px 10px", borderRadius: "20px", fontSize: "12px", textDecoration: "none", color: "#0a0a0a", fontWeight: 700 }}>{s.icon} {s.name}</a>)}</div>
-          </div>
-        </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "12px" }}>
-          {BLUEPRINTS.slice(0,4).map(b => (
-            <div key={b.id} style={{ borderRadius: "12px", overflow: "hidden", border: "1px solid #eee" }}>
-              <img src={b.img} style={{ width: "100%", height: "120px", objectFit: "cover" }} />
-              <div style={{ padding: "12px" }}><strong>{b.name}</strong><div style={{ fontSize: "12px", color: "#666" }}>${b.price}</div></div>
-            </div>
-          ))}
-        </div>
-        <button onClick={() => nav("/blueprints")} style={{ background: "#BC13FE", color: "white", padding: "16px", borderRadius: "12px", border: "none", fontWeight: 800, fontSize: "16px", cursor: "pointer", boxShadow: "0 0 20px #BC13FE" }}>View All 7 Blueprints With Images →</button>
-      </div>
-    </Page>
-  )
-}
-
-function BlueprintsPage() {
-  const nav = useNavigate()
-  return (
-    <Page title="Business Blueprints - 7 Live With Images" subtitle="Full Atlas OS visuals + products + socials - Launch goes to Factory">
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "20px" }}>
-        {BLUEPRINTS.map(b => (
-          <div key={b.id} style={{ border: b.id==="bundle"?"3px solid #BC13FE":"2px solid #eee", borderRadius: "16px", overflow: "hidden", background: "white", boxShadow: "0 8px 24px rgba(0,0,0,0.06)" }}>
-            <img src={b.img} alt={b.name} style={{ width: "100%", height: "180px", objectFit: "cover" }} />
-            <div style={{ padding: "20px" }}>
-              {b.badge && <div style={{ background: b.id==="bundle"?"#BC13FE":"#0a0a0a", color: "white", padding: "4px 10px", borderRadius: "20px", fontSize: "11px", fontWeight: 700, display: "inline-block", marginBottom: "8px" }}>{b.badge}</div>}
-              <h3 style={{ margin: "0 0 6px", color: "#0a0a0a" }}>{b.name}</h3>
-              <p style={{ color: "#555", fontSize: "13px", lineHeight: "1.4", minHeight: "40px" }}>{b.desc}</p>
-              <div style={{ background: "#f5f5f5", padding: "6px 10px", borderRadius: "6px", fontSize: "11px", margin: "8px 0", fontWeight: 600 }}>{b.includes}</div>
-              <div style={{ fontSize: "24px", fontWeight: 800, margin: "8px 0" }}>${b.price}</div>
-              <button onClick={() => nav("/factory")} style={{ width: "100%", background: b.id==="bundle"?"#BC13FE":"#0a0a0a", color: "white", border: "none", padding: "10px", borderRadius: "8px", fontWeight: 700, cursor: "pointer" }}>Launch Factory</button>
-            </div>
-          </div>
-        ))}
-      </div>
-    </Page>
-  )
-}
-
-function ToolsPage() {
-  return (
-    <Page title="Tools - 6 Visual Tools" subtitle="All tools with colors, icons, and images from Atlas OS">
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "16px" }}>
-        {[
-          { name: "Product Generator", color: "#FF6B6B", img: "https://images.unsplash.com/photo-1558655146-d09347e92766?w=400", desc: "Generate product ideas" },
-          { name: "Ad Creator", color: "#4ECDC4", img: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400", desc: "Create ads with La Tambora" },
-          { name: "Blueprint Builder", color: "#45B7D1", img: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=400", desc: "Build custom blueprints" },
-          { name: "Supabase Connector", color: "#96CEB4", img: "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=400", desc: "Connect database" },
-          { name: "Stripe Checkout", color: "#FFEAA7", img: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400", desc: "Payments - Tees + Bundles" },
-          { name: "Factory Pipeline", color: "#DDA0DD", img: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400", desc: "Rochester POD automation" },
-        ].map(t => (
-          <div key={t.name} style={{ border: "2px solid #eee", borderRadius: "16px", overflow: "hidden", borderLeft: "6px solid "+t.color }}>
-            <img src={t.img} style={{ width: "100%", height: "140px", objectFit: "cover" }} />
-            <div style={{ padding: "16px" }}>
-              <h3 style={{ margin: "0 0 6px" }}>{t.name}</h3>
-              <p style={{ fontSize: "13px", color: "#666" }}>{t.desc}</p>
-              <div style={{ marginTop: "8px", background: t.color, display: "inline-block", padding: "2px 8px", borderRadius: "10px", fontSize: "10px", fontWeight: 800 }}>LIVE</div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </Page>
-  )
-}
-
-function ProductsPage() {
-  return (
-    <Page title="Products - Full Visual Catalog" subtitle="284 Tees mockup + 7 Blueprints + Rochester printers linked">
-      <div style={{ background: "#f9f9f9", padding: "16px", borderRadius: "12px", marginBottom: "20px" }}>
-        <strong>Printed in Rochester:</strong> Custom One Online (Marketplace Mall) + AlphaGraphics (478 Thurston) + SameDayCustom (1-hour). Socials: IG @mimis_corner_co, FB Tonya Stewart, TikTok @mimis_corner_co - All linked in header/footer.
-      </div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "16px", marginBottom: "32px" }}>
-        {[1,2,3,4,5,6].map(i => (
-          <div key={i} style={{ border: "1px solid #eee", borderRadius: "12px", overflow: "hidden" }}>
-            <img src={`https://images.unsplash.com/photo-${i===1?"1576566588028-4147f3842f27":i===2?"1521572163474-6864f9cf17ab":i===3?"1562157873-818bc0726f68":i===4?"1571945153237-4929e783af4a":i===5?"1583743814966-8936f5b7be1a":"1529374255404-90db594a5d32"}?w=400`} style={{ width: "100%", height: "200px", objectFit: "cover" }} />
-            <div style={{ padding: "10px" }}><div style={{ fontSize: "13px", fontWeight: 700 }}>Cozy Tee #{i} - $24.99</div><div style={{ fontSize: "11px", color: "#888" }}>ADHD Mom Collection</div></div>
-          </div>
-        ))}
-      </div>
-      <h3>Atlas Blueprints With Images</h3>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "16px" }}>
-        {BLUEPRINTS.map(b => (
-          <div key={b.id} style={{ border: "1px solid #eee", borderRadius: "12px", overflow: "hidden" }}>
-            <img src={b.img} style={{ width: "100%", height: "150px", objectFit: "cover" }} />
-            <div style={{ padding: "14px" }}><strong>{b.name} - ${b.price}</strong><p style={{ fontSize: "12px", color: "#666", margin: "4px 0 0" }}>{b.desc}</p></div>
-          </div>
-        ))}
-      </div>
-    </Page>
-  )
-}
-
-function FactoryPage() { return <Page title="Factory - Visual Pipeline" subtitle="Idea to product in 24h with images"><img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1200" style={{ width: "100%", height: "300px", objectFit: "cover", borderRadius: "16px", marginBottom: "16px" }} /><div style={{ padding: "20px", background: "#0a0a0a", color: "white", borderRadius: "12px" }}><p>Blueprint → Tools → Stripe → Supabase → Rochester POD → Ship from 2 Eva Pl</p><p>Bundle $497 = ALL 6 + Factory + 1:1 + Lifetime</p></div></Page> }
-function AdsPage() { return <Page title="Ads Pack $25 - Visual Templates" subtitle="50 templates including La Tambora with preview images"><div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "12px" }}>{[1,2,3,4,5,6].map(i => <img key={i} src={`https://images.unsplash.com/photo-${i===1?"1611224923853-80b023f02d71":i===2?"1561070791-2526d30994b5":i===3?"1558655146-d09347e92766":i===4?"1460925895917-afdab827c52f":i===5?"1558655146-9f40138edfeb":"1558655146-364adaf1fcc9"}?w=400`} style={{ width: "100%", height: "200px", objectFit: "cover", borderRadius: "12px" }} />)}</div></Page> }
-
-export default function App() {
-  return (
-    <BrowserRouter>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/blueprints" element={<BlueprintsPage />} />
-        <Route path="/tools" element={<ToolsPage />} />
-        <Route path="/products" element={<ProductsPage />} />
-        <Route path="/factory" element={<FactoryPage />} />
-        <Route path="/ads" element={<AdsPage />} />
-      </Routes>
-      <footer style={{ textAlign: "center", padding: "24px", color: "#888", borderTop: "2px solid #BC13FE20", background: "#fafafa" }}>
-        <div style={{ display: "flex", justifyContent: "center", gap: "12px", marginBottom: "12px" }}>
-          {SOCIALS.map(s => <a key={s.name} href={s.url} target="_blank" style={{ background: "white", border: "1px solid #eee", padding: "8px 14px", borderRadius: "20px", textDecoration: "none", color: "#0a0a0a", fontWeight: 700, fontSize: "13px" }}>{s.icon} {s.name}</a>)}
-        </div>
-        <div>2026 Mimis Cozy Corner - Atlas OS - Paying rent one design at a time</div>
-        <div style={{ fontSize: "12px", marginTop: "6px" }}>Rochester POD: Custom One Online + AlphaGraphics • Stripe + Supabase Connected</div>
-      </footer>
-    </BrowserRouter>
-  )
+export default function App(){
+  const [active, setActive] = useState("All")
+  const [cart, setCart] = useState<Product[]>([])
+  const [search, setSearch] = useState("")
+  const filtered = useMemo(()=>{ return PRODUCTS.filter(p=>{ const matchCol = active==="All" || p.collection===active; const matchSearch = p.name.toLowerCase().includes(search.toLowerCase()); return matchCol && matchSearch }) },[active, search])
+  return (<div style={{fontFamily:'Inter, system-ui, sans-serif', background:'#fff', color:'#111', minHeight:'100vh'}}><header style={{background:'#fff', borderBottom:'1px solid #eee', position:'sticky', top:0, zIndex:50}}><div style={{maxWidth:'1300px', margin:'0 auto', padding:'18px 20px', display:'flex', justifyContent:'space-between', alignItems:'center'}}><div><h1 style={{margin:0, fontSize:'22px', letterSpacing:'4px', fontWeight:900}}>MIMI'S COZY CORNER</h1><div style={{fontSize:'10px', letterSpacing:'4px', marginTop:'4px', color:'#666'}}>EST. 2023 • {PRODUCTS.length} PRODUCTS LIVE</div></div><div style={{display:'flex', gap:'12px', alignItems:'center'}}><input value={search} onChange={e=>setSearch(e.target.value)} placeholder={`Search ${PRODUCTS.length}...`} style={{border:'1px solid #000', padding:'8px 12px', width:'180px'}} /><div style={{border:'1px solid #000', padding:'8px 16px', fontWeight:700}}>CART ({cart.length})</div></div></div><div style={{borderTop:'1px solid #f2f2f2', overflowX:'auto', whiteSpace:'nowrap', padding:'10px 20px', display:'flex', gap:'8px', justifyContent:'center'}}>{COLLECTIONS.map(c=>(<button key={c} onClick={()=>setActive(c)} style={{padding:'6px 14px', border:'1px solid #000', background: active===c? '#000' : '#fff', color: active===c? '#fff' : '#000', fontSize:'11px', fontWeight:700, letterSpacing:'1px', cursor:'pointer', textTransform:'uppercase'}}>{c}</button>))}</div></header><section style={{background:'#fff', textAlign:'center', padding:'50px 20px 30px'}}><h2 style={{fontSize:'38px', margin:'0 0 10px', letterSpacing:'-1px'}}>COZY COLLECTION LIVE</h2><p style={{color:'#666', margin:0}}>{filtered.length} Real Products • Free Shipping Over $75</p></section><main style={{maxWidth:'1300px', margin:'0 auto', padding:'0 20px 80px'}}><div style={{display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(220px,1fr))', gap:'20px'}}>{filtered.map(p=>(<div key={p.id} style={{border:'1px solid #eee', background:'#fff'}}><div style={{aspectRatio:'1', background:'#f9f9f9', overflow:'hidden'}}><img src={p.image} alt={p.name} style={{width:'100%', height:'100%', objectFit:'cover'}} loading="lazy" /></div><div style={{padding:'12px'}}><div style={{fontSize:'10px', letterSpacing:'2px', color:'#999', textTransform:'uppercase'}}>{p.collection}</div><div style={{fontSize:'14px', fontWeight:600, margin:'4px 0'}}>{p.name}</div><div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginTop:'8px'}}><span style={{fontWeight:900}}>${p.price}.00</span><button onClick={()=>setCart([...cart, p])} style={{background:'#000', color:'#fff', border:'none', padding:'6px 12px', fontSize:'11px', fontWeight:700, cursor:'pointer'}}>ADD</button></div></div></div>))}</div></main><footer style={{background:'#000', color:'#fff', textAlign:'center', padding:'30px', fontSize:'11px', letterSpacing:'3px'}}>MIMI'S COZY CORNER • 49 PRODUCTS LIVE</footer></div>)
 }

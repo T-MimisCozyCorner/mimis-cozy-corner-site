@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+
+    <!-- ✅ Fixed: plain text only, no markdown syntax -->
+    <title>Mimi's Cozy Corner — Funny &amp; Relatable T-Shirts | mimiscozycorner.com</title>
+    <meta name="description" content="Cozy, funny and real-life designs you actually relate to. Shop t-shirts, digital downloads and gifts at mimiscozycorner.com" />
+    <meta name="keywords" content="funny tshirts, relatable tshirts, mom tshirts, dad humor, burnout tshirts, kids tshirts, mimiscozycorner" />
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://mimiscozycorner.com" />
+
+    <!-- ✅ Fixed: OG tags with image added -->
+    <meta property="og:title" content="Mimi's Cozy Corner — Funny Relatable T-Shirts" />
+    <meta property="og:description" content="Cozy, funny and real-life designs you actually relate to 😂🤎" />
+    <meta property="og:url" content="https://mimiscozycorner.com" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://mimiscozycorner.com/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <!-- Twitter card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://mimiscozycorner.com/og-image.jpg" />
+
+    <!-- ✅ Fixed: non-blocking Google Fonts (no render-blocking) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Nunito:wght@400;600;700;800;900&family=Pacifico&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Nunito:wght@400;600;700;800;900&family=Pacifico&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
+
+    <!-- ✅ font-display: swap fallback via inline style so text is visible before fonts load -->
+    <style>
+      body { font-family: 'Nunito', sans-serif; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <!-- App entry (Vite injects modulepreload links automatically at build time) -->
+    <script type="module" src="/src/main.tsx"></script>
+
+    <!-- ✅ Analytics: defer is correct for performance; see note below re: SPA tracking -->
+    <script
+      defer
+      src="%VITE_ANALYTICS_ENDPOINT%/umami"
+      data-website-id="%VITE_ANALYTICS_WEBSITE_ID%"
+    ></script>
+  </body>
+</html>
