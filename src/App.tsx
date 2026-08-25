@@ -7,8 +7,8 @@ type Prod = { name: string; bp: number; pp: number; vars: number[]; price: strin
 
 const PRODS: Prod[] = [
   { name: "Unisex T-Shirt", bp: 6, pp: 99, vars: [40142,40143,40144,40145], price: "$24.99", emoji: "👕" },
-  { name: "Hoodie", bp: 5, pp: 99, vars: [40057,40058,40059], price: "$44.99", emoji: "🧥" },
-  { name: "Mug 11oz", bp: 635, pp: 99, vars: [49201], price: "$14.99", emoji: "☕" },
+  { name: "Hoodie", bp: 5, pp: 99, vars: [40049,40050,40051], price: "$44.99", emoji: "🧥" },
+  { name: "Mug 11oz", bp: 86, pp: 99, vars: [47745], price: "$14.99", emoji: "☕" },
   { name: "Tote Bag", bp: 12, pp: 99, vars: [41021], price: "$19.99", emoji: "👜" },
 ];
 
