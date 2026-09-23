@@ -32,7 +32,7 @@ const allDesigns: Design[] = Object.entries(mods)
   return { title, image: "/images/"+encodeURIComponent(fn), brand: getBrand(fn) };
 });
 
-export default function App(){
+function ExistingApp(){
   const [q,setQ]=useState("");
   const [brand,setBrand]=useState<"all"|"budget"|"daily"|"creative"|"atlas">("all");
   const [sel,setSel]=useState<Design|null>(null);
@@ -161,4 +161,53 @@ export default function App(){
       )}
     </div>
   );
+}
+
+
+const restoredProducts = [
+  { id:'budget-buster', title:'Budget Buster Smart Workbook', subtitle:'Big Savings • Smart Finds • Happy Wallets', price:'$5', image:'/products/budget-buster.png', badge:'SMART Workbook' },
+  { id:'self-care', title:'Self Care Reset Smart Workbook', subtitle:"Custom Designs for Cozy Mamas • Let's Make Something Cozy", price:'$5', image:'/products/self-care.jpg', badge:'SMART Workbook' },
+  { id:'gratitude', title:'Gratitude Journal Smart Reflection', subtitle:'Daily gratitude prompts • Mindful moments • Feel-good vibes', price:'$5', image:'/products/gratitude.jpg', badge:'SMART Reflection' },
+  { id:'dream', title:'Dream Journal Smart Reflection', subtitle:'Capture dreams • Night notes • Reflect & grow', price:'$5', image:'/products/dream.jpg', badge:'SMART Reflection' },
+  { id:'home-binder', title:'Home Binder Smart Writable', subtitle:'Organize your home • Writable pages • Everyday ease', price:'$5', image:'/products/home-binder.jpg', badge:'SMART Writable' },
+  { id:'unfiltered-mama', title:'Unfiltered Mama Smart Workbook', subtitle:'Raw motherhood • rage • joy • Real talk for real mamas', price:'$5', image:'/products/unfiltered-mama.png', badge:'SMART Workbook' },
+  { id:'twin-story', title:'My Twin Story Method Smart Workbook', subtitle:'Every story has a twin • Guided storytelling method', price:'$5', image:'/products/twin-story.jpg', badge:'SMART Workbook' },
+  { id:'mimi-finds', title:'Mimi Finds Daily Smart Guide', subtitle:'Top Finds • Real Reviews • Every Day • Curated with love', price:'$5', image:'/products/mimi-finds.png', badge:'SMART Guide' },
+  { id:'section8', title:'Section 8 Housing Smart Guide', subtitle:'All 50 States • Helping Families Find a Place to Call Home', price:'$5', image:'/products/section8.jpg', badge:'SMART Guide' },
+  { id:'shoprescue', title:'ShopRescue Smart Guide', subtitle:'Auto repair rescue • Guidance • Save at the shop • Know before you go', price:'$49', image:'/products/shoprescue.jpg', badge:'SMART Guide' },
+]
+
+function DigitalProducts() {
+  return <div style={{background:'#080713', minHeight:'100vh', color:'#fff', fontFamily:'system-ui, -apple-system, Segoe UI, sans-serif'}}>
+    <header style={{padding:'18px 24px', borderBottom:'1px solid rgba(255,255,255,.12)', position:'sticky', top:0, background:'rgba(8,7,19,.94)', backdropFilter:'blur(12px)', zIndex:10}}>
+      <div style={{maxWidth:1200, margin:'0 auto', display:'flex', alignItems:'center', justifyContent:'space-between', gap:16}}>
+        <a href='/' style={{color:'#fff', textDecoration:'none', fontWeight:900, letterSpacing:'.04em'}}>Mimi's Cozy Corner</a>
+        <a href='/' style={{color:'#28e8ff', textDecoration:'none', fontWeight:700}}>← Back Home</a>
+      </div>
+    </header>
+    <section style={{padding:'64px 20px 34px', textAlign:'center', background:'radial-gradient(circle at 50% 0%, rgba(255,200,87,.18), transparent 45%)'}}>
+      <div style={{display:'inline-block', padding:'7px 12px', border:'1px solid rgba(255,200,87,.45)', borderRadius:999, color:'#ffc857', fontSize:12, fontWeight:800, letterSpacing:'.08em'}}>MIMI'S DIGITAL PRODUCTS</div>
+      <h1 style={{fontSize:'clamp(34px,6vw,64px)', margin:'18px auto 10px', maxWidth:900, lineHeight:1.02}}>Smart products made to be used.</h1>
+      <p style={{maxWidth:700, margin:'0 auto', color:'#c9c6d7', fontSize:17}}>Downloadable workbooks, journals, guides, and practical tools from Mimi's Cozy Corner.</p>
+    </section>
+    <section style={{padding:'24px 20px 70px'}}>
+      <div style={{maxWidth:1200, margin:'0 auto', display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(230px,1fr))', gap:22}}>
+        {restoredProducts.map(p => <article key={p.id} style={{background:'rgba(255,255,255,.055)', border:'1px solid rgba(255,255,255,.12)', borderRadius:20, overflow:'hidden', boxShadow:'0 12px 35px rgba(0,0,0,.22)'}}>
+          <div style={{background:'#111022', aspectRatio:'1/1', display:'grid', placeItems:'center', padding:12}}><img src={p.image} alt={p.title} style={{width:'100%',height:'100%',objectFit:'contain',borderRadius:12}}/></div>
+          <div style={{padding:18}}>
+            <div style={{display:'inline-block',padding:'5px 9px',borderRadius:999,background:'rgba(255,200,87,.12)',color:'#ffc857',fontSize:10,fontWeight:900,letterSpacing:'.06em'}}>{p.badge}</div>
+            <h2 style={{fontSize:19,lineHeight:1.2,margin:'12px 0 8px'}}>{p.title}</h2>
+            <p style={{color:'#aaa7b9',fontSize:13,lineHeight:1.5,minHeight:58,margin:'0 0 16px'}}>{p.subtitle}</p>
+            <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:10}}><strong style={{fontSize:24,color:'#ffc857'}}>{p.price}</strong><button type='button' style={{border:0,borderRadius:12,padding:'10px 14px',fontWeight:900,background:'#ff4fbe',color:'#fff',cursor:'pointer'}} onClick={()=>alert(`${p.title} — product checkout/download link can be connected next.`)}>View Product</button></div>
+          </div>
+        </article>)}
+      </div>
+    </section>
+  </div>
+}
+
+export default function App(){
+  const path = window.location.pathname.replace(/\/$/, '') || '/';
+  if (path === '/digital-products') return <DigitalProducts />;
+  return <ExistingApp />;
 }
