@@ -164,6 +164,27 @@ function ExistingApp(){
 }
 
 
+const payhipLinks: Record<string, string> = {
+  'budget-buster': 'https://payhip.com/buy?link=BzZT8',
+  'self-care': 'https://payhip.com/buy?link=jVEFc',
+  'gratitude': 'https://payhip.com/buy?link=OcHNL',
+  'dream': 'https://payhip.com/buy?link=Wj0Gn',
+  'home-binder': 'https://payhip.com/buy?link=kiNdm',
+  'unfiltered-mama': 'https://payhip.com/buy?link=9enVh',
+  'mimi-finds': 'https://payhip.com/buy?link=Fw0S2',
+  'section8': 'https://payhip.com/buy?link=DEyje',
+  'shoprescue': 'https://payhip.com/buy?link=38jHZ',
+};
+
+function goToPayhip(productId: string) {
+  const link = payhipLinks[productId];
+
+  if (link) {
+    window.location.href = link;
+  } else {
+    alert('This product checkout is being connected. Please check back soon.');
+  }
+}
 const restoredProducts = [
   { id:'budget-buster', title:'Budget Buster Smart Workbook', subtitle:'Big Savings • Smart Finds • Happy Wallets', price:'$5', image:'/products/budget-buster.png', badge:'SMART Workbook',
     pages:[
@@ -301,7 +322,7 @@ function ProductPreview({p,onClose}:{p:any,onClose:()=>void}){
           <PreviewWatermark/>
         </div>)}
         <div style={{textAlign:'center',padding:'20px 0 30px'}}>
-          <button onClick={()=>{ if(p.id==='budget-buster') window.location.href='https://payhip.com/b/BzZT8'; else alert(`${p.title} — checkout link will be connected next.`); }}
+          <button onClick={()=>goToPayhip(p.id)}
             style={{border:0,borderRadius:999,padding:'15px 25px',fontWeight:900,fontSize:16,background:'#ff4fbe',color:'#fff',cursor:'pointer'}}>
             Get {p.title} — {p.price}
           </button>
@@ -339,7 +360,7 @@ function DigitalProducts(){
               <strong style={{fontSize:24,color:'#ffc857'}}>{p.price}</strong>
               <div style={{display:'flex',gap:8}}>
                 <button type='button' onClick={()=>setSelected(p)} style={{border:'1px solid #28e8ff',borderRadius:12,padding:'10px 12px',fontWeight:900,background:'rgba(40,232,255,.08)',color:'#28e8ff',cursor:'pointer'}}>👁 Preview</button>
-                <button type='button' onClick={()=>{if(p.id==='budget-buster')window.location.href='https://payhip.com/b/BzZT8';else alert(`${p.title} — product checkout link can be connected next.`);}} style={{border:0,borderRadius:12,padding:'10px 14px',fontWeight:900,background:'#ff4fbe',color:'#fff',cursor:'pointer'}}>View Product</button>
+                <button type='button' onClick={()=>goToPayhip(p.id)} style={{border:0,borderRadius:12,padding:'10px 14px',fontWeight:900,background:'#ff4fbe',color:'#fff',cursor:'pointer'}}>View Product</button>
               </div>
             </div>
           </div>
