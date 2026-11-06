@@ -12,6 +12,63 @@ const PRODS: Prod[] = [
   { name: "Tote Bag", bp: 12, pp: 99, vars: [41021], price: "$19.99", emoji: "👜" },
 ];
 
+// Buy links: normalized gallery design title -> Printify Pop-Up Store product URL.
+// Keys must match normalizeTitle() applied to the design title shown in the modal.
+// Only T-shirts exist in Printify, so every link goes to a T-shirt product.
+// Designs without an entry fall back to the store homepage (STORE_HOME).
+// "Angels Andoutlaws" is spelled that way on purpose: the source file is
+// "ANGELS andOUTLAWS.webp" (missing space), so the site title is "Angels Andoutlaws".
+const STORE_HOME = "https://mimiscozycorner.printify.me/";
+const STORE_LINKS: Record<string, string> = {
+  "0 days since my last": "https://mimiscozycorner.printify.me/product/34031445",
+  "ancient flame": "https://mimiscozycorner.printify.me/product/34031094",
+  "angels andoutlaws": "https://mimiscozycorner.printify.me/product/34031468",
+  "bear of backyard avoidance": "https://mimiscozycorner.printify.me/product/34031081",
+  "behind every great kid": "https://mimiscozycorner.printify.me/product/34031264",
+  "best dad by par": "https://mimiscozycorner.printify.me/product/34031394",
+  "blade bloom": "https://mimiscozycorner.printify.me/product/34031248",
+  "blessed stressed 1": "https://mimiscozycorner.printify.me/product/34031187",
+  "blessed stressed caffeinated chaos": "https://mimiscozycorner.printify.me/product/34031392",
+  "bookish": "https://mimiscozycorner.printify.me/product/34031089",
+  "buffalo of budgeting breakdown": "https://mimiscozycorner.printify.me/product/34031051",
+  "burnt out crispy unicorn": "https://mimiscozycorner.printify.me/product/34031041",
+  "calm mind club": "https://mimiscozycorner.printify.me/product/34031447",
+  "casting spells not opinions": "https://mimiscozycorner.printify.me/product/34031358",
+  "castle of the night": "https://mimiscozycorner.printify.me/product/34031173",
+  "cat in chaos overload": "https://mimiscozycorner.printify.me/product/34031163",
+  "celestial gaze": "https://mimiscozycorner.printify.me/product/34031076",
+  "chaos crown": "https://mimiscozycorner.printify.me/product/34031201",
+  "chill out colorful": "https://mimiscozycorner.printify.me/product/34031240",
+  "choose calm blue": "https://mimiscozycorner.printify.me/product/34031369",
+  "choose calm zen": "https://mimiscozycorner.printify.me/product/34031157",
+  "cozy homebody coffee": "https://mimiscozycorner.printify.me/product/34031140",
+  "cozy vibes": "https://mimiscozycorner.printify.me/product/34031112",
+  "dad bod built by bbq": "https://mimiscozycorner.printify.me/product/34031448",
+  "dad eats my fries": "https://mimiscozycorner.printify.me/product/34031103",
+  "dad jokes are how eye": "https://mimiscozycorner.printify.me/product/34031228",
+  "dad life powered by coffee": "https://mimiscozycorner.printify.me/product/34031143",
+  "dad master of the remote": "https://mimiscozycorner.printify.me/product/34031381",
+  "dad professional thermostat protector": "https://mimiscozycorner.printify.me/product/34031213",
+  "dad tax taking a piece": "https://mimiscozycorner.printify.me/product/34031037",
+  "dads chair touch it": "https://mimiscozycorner.printify.me/product/34031258",
+  "dads favorite exercise walking to": "https://mimiscozycorner.printify.me/product/34031152",
+  "dads nap the most protected": "https://mimiscozycorner.printify.me/product/34031444",
+  "dads snack stash hidden better": "https://mimiscozycorner.printify.me/product/34031181",
+  "dads universal fix put some": "https://mimiscozycorner.printify.me/product/34031196",
+  "divine damned": "https://mimiscozycorner.printify.me/product/34031428",
+  "divine light within": "https://mimiscozycorner.printify.me/product/34031046",
+  "dog of dad jokes": "https://mimiscozycorner.printify.me/product/34031269",
+  "done dragon": "https://mimiscozycorner.printify.me/product/34031129",
+  "promoted to mom still figuring": "https://mimiscozycorner.printify.me/product/34031441",
+};
+
+// Normalize a gallery design title exactly the way the STORE_LINKS keys were built:
+// lowercase, "&" -> "and", apostrophes dropped, other punctuation -> space,
+// collapse whitespace, drop the word "and".
+function normalizeTitle(t: string): string {
+  return t.toLowerCase().replace(/&/g, " and ").replace(/['‘’ʼ]/g, "").replace(/[^a-z0-9 ]+/g, " ").replace(/\s+/g, " ").split(" ").filter(w => w && w !== "and").join(" ");
+}
+
 const getBrand = (fn: string): Design["brand"] => {
   const f = fn.toLowerCase();
   if (f.includes("budget") || f.includes("broke") || f.includes("save") || f.includes("cheap") || f.includes("dollar") || f.includes("coupon")) return "budget";
@@ -153,7 +210,10 @@ function ExistingApp(){
               <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:"6px", marginTop:"10px"}}>
                 {PRODS.map(p=><button key={p.name} onClick={()=>setSelProd(p)} style={{padding:"8px", borderRadius:"8px", border: selProd.name===p.name?"2px solid #a2006d":"1px solid #eee", background: selProd.name===p.name?"#fef2f8":"white", fontSize:"11px", fontWeight:700}}>{p.emoji} {p.name}</button>)}
               </div>
-              <button onClick={()=>create(sel.image, sel.title)} disabled={creating} style={{width:"100%", marginTop:"10px", padding:"11px", background:"#a2006d", color:"white", border:"none", borderRadius:"10px", fontWeight:800, fontSize:"12px"}}>{creating?"CREATING...":`CREATE ${selProd.name}`}</button>
+              <button onClick={()=>window.open(STORE_LINKS[normalizeTitle(sel.title)] || STORE_HOME, "_blank")} style={{width:"100%", marginTop:"10px", padding:"11px", background:"#a2006d", color:"white", border:"none", borderRadius:"10px", fontWeight:800, fontSize:"12px"}}>{STORE_LINKS[normalizeTitle(sel.title)] ? "BUY THIS SHIRT \u2014 $24.99" : "SEE ALL SHIRTS"}</button>
+              <div style={{textAlign:"center", marginTop:"8px"}}>
+                <button onClick={()=>create(sel.image, sel.title)} disabled={creating} style={{border:"none", background:"none", color:"#999", fontSize:"10px", textDecoration:"underline", cursor:"pointer"}}>Seller: create this in Printify</button>
+              </div>
               <button onClick={()=>setSel(null)} style={{width:"100%", marginTop:"8px", padding:"8px", border:"none", background:"#eee", borderRadius:"8px", fontSize:"11px"}}>Close</button>
             </div>
           </div>
