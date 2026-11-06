@@ -14,8 +14,16 @@ const PRODS: Prod[] = [
 
 // Buy links: normalized gallery design title -> Printify Pop-Up Store product URL.
 // Keys must match normalizeTitle() applied to the design title shown in the modal.
-// Only T-shirts exist in Printify, so every link goes to a T-shirt product.
+// v3 covers the FULL gallery (325 unique designs x 4 product types = 1,304 products).
+// T-shirt links below are live (the 42 published T-shirts). Hoodie / mug / tote
+// products and the remaining T-shirts exist as drafts; their tables below are
+// filled in by fill_store_urls.py after they are published in Printify, because
+// a draft has no store URL until it is published.
 // Designs without an entry fall back to the store homepage (STORE_HOME).
+// "Believe in Yourself" links the (BRIGHT) site variant to the published product;
+// the (DREAMY)/(NIGHT) variants get links once their drafts are published.
+// "Cozy Reader Club" links BOTH site variants (cozy/plain) to the published
+// Canva-export T-shirt (4500x5400), which is the primary (full-size) version.
 // "Angels Andoutlaws" is spelled that way on purpose: the source file is
 // "ANGELS andOUTLAWS.webp" (missing space), so the site title is "Angels Andoutlaws".
 const STORE_HOME = "https://mimiscozycorner.printify.me/";
@@ -25,6 +33,7 @@ const STORE_LINKS: Record<string, string> = {
   "angels andoutlaws": "https://mimiscozycorner.printify.me/product/34031468",
   "bear of backyard avoidance": "https://mimiscozycorner.printify.me/product/34031081",
   "behind every great kid": "https://mimiscozycorner.printify.me/product/34031264",
+  "believe in yourself bright": "https://mimiscozycorner.printify.me/product/34031059",
   "best dad by par": "https://mimiscozycorner.printify.me/product/34031394",
   "blade bloom": "https://mimiscozycorner.printify.me/product/34031248",
   "blessed stressed 1": "https://mimiscozycorner.printify.me/product/34031187",
@@ -42,6 +51,8 @@ const STORE_LINKS: Record<string, string> = {
   "choose calm blue": "https://mimiscozycorner.printify.me/product/34031369",
   "choose calm zen": "https://mimiscozycorner.printify.me/product/34031157",
   "cozy homebody coffee": "https://mimiscozycorner.printify.me/product/34031140",
+  "cozy reader club cozy": "https://mimiscozycorner.printify.me/product/34031207",
+  "cozy reader club plain": "https://mimiscozycorner.printify.me/product/34031207",
   "cozy vibes": "https://mimiscozycorner.printify.me/product/34031112",
   "dad bod built by bbq": "https://mimiscozycorner.printify.me/product/34031448",
   "dad eats my fries": "https://mimiscozycorner.printify.me/product/34031103",
@@ -62,11 +73,44 @@ const STORE_LINKS: Record<string, string> = {
   "promoted to mom still figuring": "https://mimiscozycorner.printify.me/product/34031441",
 };
 
+// Hoodie / mug / tote links: same key format as STORE_LINKS. Filled in by
+// fill_store_urls.py (from printify-product-map-full.json) after the drafts are
+// published in Printify (a draft has no store URL until it is published).
+// Until then the buy button for these types falls back to STORE_HOME
+// ("SEE ALL PRODUCTS").
+const HOODIE_LINKS: Record<string, string> = {
+};
+const MUG_LINKS: Record<string, string> = {
+};
+const TOTE_LINKS: Record<string, string> = {
+};
+
 // Normalize a gallery design title exactly the way the STORE_LINKS keys were built:
 // lowercase, "&" -> "and", apostrophes dropped, other punctuation -> space,
 // collapse whitespace, drop the word "and".
 function normalizeTitle(t: string): string {
   return t.toLowerCase().replace(/&/g, " and ").replace(/['‘’ʼ]/g, "").replace(/[^a-z0-9 ]+/g, " ").replace(/\s+/g, " ").split(" ").filter(w => w && w !== "and").join(" ");
+}
+
+// Pick the buy link for the product type the customer selected in the modal.
+// Returns the matching Pop-Up Store product URL, or the store homepage with a
+// "SEE ALL PRODUCTS" label when this design has no product of that type.
+function buyTarget(prodName: string, title: string): { url: string; label: string } {
+  const key = normalizeTitle(title);
+  if (prodName === "Hoodie") {
+    const u = HOODIE_LINKS[key];
+    return u ? { url: u, label: "BUY THIS HOODIE \u2014 $44.99" } : { url: STORE_HOME, label: "SEE ALL PRODUCTS" };
+  }
+  if (prodName === "Mug 11oz") {
+    const u = MUG_LINKS[key];
+    return u ? { url: u, label: "BUY THIS MUG \u2014 $14.99" } : { url: STORE_HOME, label: "SEE ALL PRODUCTS" };
+  }
+  if (prodName === "Tote Bag") {
+    const u = TOTE_LINKS[key];
+    return u ? { url: u, label: "BUY THIS TOTE \u2014 $19.99" } : { url: STORE_HOME, label: "SEE ALL PRODUCTS" };
+  }
+  const u = STORE_LINKS[key];
+  return u ? { url: u, label: "BUY THIS SHIRT \u2014 $24.99" } : { url: STORE_HOME, label: "SEE ALL PRODUCTS" };
 }
 
 const getBrand = (fn: string): Design["brand"] => {
@@ -210,7 +254,7 @@ function ExistingApp(){
               <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:"6px", marginTop:"10px"}}>
                 {PRODS.map(p=><button key={p.name} onClick={()=>setSelProd(p)} style={{padding:"8px", borderRadius:"8px", border: selProd.name===p.name?"2px solid #a2006d":"1px solid #eee", background: selProd.name===p.name?"#fef2f8":"white", fontSize:"11px", fontWeight:700}}>{p.emoji} {p.name}</button>)}
               </div>
-              <button onClick={()=>window.open(STORE_LINKS[normalizeTitle(sel.title)] || STORE_HOME, "_blank")} style={{width:"100%", marginTop:"10px", padding:"11px", background:"#a2006d", color:"white", border:"none", borderRadius:"10px", fontWeight:800, fontSize:"12px"}}>{STORE_LINKS[normalizeTitle(sel.title)] ? "BUY THIS SHIRT \u2014 $24.99" : "SEE ALL SHIRTS"}</button>
+              <button onClick={()=>window.open(buyTarget(selProd.name, sel.title).url, "_blank")} style={{width:"100%", marginTop:"10px", padding:"11px", background:"#a2006d", color:"white", border:"none", borderRadius:"10px", fontWeight:800, fontSize:"12px"}}>{buyTarget(selProd.name, sel.title).label}</button>
               <div style={{textAlign:"center", marginTop:"8px"}}>
                 <button onClick={()=>create(sel.image, sel.title)} disabled={creating} style={{border:"none", background:"none", color:"#999", fontSize:"10px", textDecoration:"underline", cursor:"pointer"}}>Seller: create this in Printify</button>
               </div>
