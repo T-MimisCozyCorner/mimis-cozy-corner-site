@@ -28,6 +28,8 @@ const PRODS: Prod[] = [
 // "ANGELS andOUTLAWS.webp" (missing space), so the site title is "Angels Andoutlaws".
 // Nov 8, 2026 (v4): +39 designs from the sassy, Pinterest and funny batches (13 each)
 // x 4 product types = 156 products; shop total 1,460. New keys are the filename-derived
+// Nov 9, 2026 (v5): +12 Pinterest batch 2 designs x 4 types = 48 products;
+// 51 new designs total, 204 products, shop total 1,508.
 // gallery titles (number prefixes stripped from the uploaded PNGs).
 const STORE_HOME = "https://mimiscozycorner.printify.me/";
 const STORE_LINKS: Record<string, string> = {
@@ -376,6 +378,19 @@ const STORE_LINKS: Record<string, string> = {
   "unstoppable unstable": "https://mimiscozycorner.printify.me/product/34099576",
   "warning fart glitter": "https://mimiscozycorner.printify.me/product/34124711",
   "woke up fabulous": "https://mimiscozycorner.printify.me/product/34124677",
+  // Nov 9, 2026 (v5): Pinterest batch 2, 12 designs.
+  "already disturbed": "https://mimiscozycorner.printify.me/product/34213841",
+  "bat shit crazy": "https://mimiscozycorner.printify.me/product/34214038",
+  "flip out bat crap crazy": "https://mimiscozycorner.printify.me/product/34213819",
+  "highland cow boss": "https://mimiscozycorner.printify.me/product/34213995",
+  "hippie friendship": "https://mimiscozycorner.printify.me/product/34213900",
+  "honk if sexy": "https://mimiscozycorner.printify.me/product/34214061",
+  "its fine chicken": "https://mimiscozycorner.printify.me/product/34214009",
+  "not getting old": "https://mimiscozycorner.printify.me/product/34213955",
+  "prayed for patience": "https://mimiscozycorner.printify.me/product/34213863",
+  "queen to gangsta": "https://mimiscozycorner.printify.me/product/34213931",
+  "todays plan": "https://mimiscozycorner.printify.me/product/34213975",
+  "why drama": "https://mimiscozycorner.printify.me/product/34213884",
 
 };
 
@@ -731,6 +746,19 @@ const HOODIE_LINKS: Record<string, string> = {
   "unstoppable unstable": "https://mimiscozycorner.printify.me/product/34099582",
   "warning fart glitter": "https://mimiscozycorner.printify.me/product/34124724",
   "woke up fabulous": "https://mimiscozycorner.printify.me/product/34124681",
+  // Nov 9, 2026 (v5): Pinterest batch 2, 12 designs.
+  "already disturbed": "https://mimiscozycorner.printify.me/product/34213844",
+  "bat shit crazy": "https://mimiscozycorner.printify.me/product/34214044",
+  "flip out bat crap crazy": "https://mimiscozycorner.printify.me/product/34213823",
+  "highland cow boss": "https://mimiscozycorner.printify.me/product/34213999",
+  "hippie friendship": "https://mimiscozycorner.printify.me/product/34213903",
+  "honk if sexy": "https://mimiscozycorner.printify.me/product/34214066",
+  "its fine chicken": "https://mimiscozycorner.printify.me/product/34214018",
+  "not getting old": "https://mimiscozycorner.printify.me/product/34213958",
+  "prayed for patience": "https://mimiscozycorner.printify.me/product/34213867",
+  "queen to gangsta": "https://mimiscozycorner.printify.me/product/34213938",
+  "todays plan": "https://mimiscozycorner.printify.me/product/34213984",
+  "why drama": "https://mimiscozycorner.printify.me/product/34213886",
 
 };
 const MUG_LINKS: Record<string, string> = {
@@ -1080,6 +1108,19 @@ const MUG_LINKS: Record<string, string> = {
   "unstoppable unstable": "https://mimiscozycorner.printify.me/product/34099587",
   "warning fart glitter": "https://mimiscozycorner.printify.me/product/34124726",
   "woke up fabulous": "https://mimiscozycorner.printify.me/product/34124683",
+  // Nov 9, 2026 (v5): Pinterest batch 2, 12 designs.
+  "already disturbed": "https://mimiscozycorner.printify.me/product/34213846",
+  "bat shit crazy": "https://mimiscozycorner.printify.me/product/34214047",
+  "flip out bat crap crazy": "https://mimiscozycorner.printify.me/product/34213827",
+  "highland cow boss": "https://mimiscozycorner.printify.me/product/34214000",
+  "hippie friendship": "https://mimiscozycorner.printify.me/product/34213905",
+  "honk if sexy": "https://mimiscozycorner.printify.me/product/34214069",
+  "its fine chicken": "https://mimiscozycorner.printify.me/product/34214024",
+  "not getting old": "https://mimiscozycorner.printify.me/product/34213963",
+  "prayed for patience": "https://mimiscozycorner.printify.me/product/34213870",
+  "queen to gangsta": "https://mimiscozycorner.printify.me/product/34213941",
+  "todays plan": "https://mimiscozycorner.printify.me/product/34213987",
+  "why drama": "https://mimiscozycorner.printify.me/product/34213891",
 
 };
 const TOTE_LINKS: Record<string, string> = {
@@ -1429,6 +1470,19 @@ const TOTE_LINKS: Record<string, string> = {
   "unstoppable unstable": "https://mimiscozycorner.printify.me/product/34099593",
   "warning fart glitter": "https://mimiscozycorner.printify.me/product/34124731",
   "woke up fabulous": "https://mimiscozycorner.printify.me/product/34124684",
+  // Nov 9, 2026 (v5): Pinterest batch 2, 12 designs.
+  "already disturbed": "https://mimiscozycorner.printify.me/product/34213849",
+  "bat shit crazy": "https://mimiscozycorner.printify.me/product/34214052",
+  "flip out bat crap crazy": "https://mimiscozycorner.printify.me/product/34213836",
+  "highland cow boss": "https://mimiscozycorner.printify.me/product/34214004",
+  "hippie friendship": "https://mimiscozycorner.printify.me/product/34213910",
+  "honk if sexy": "https://mimiscozycorner.printify.me/product/34214073",
+  "its fine chicken": "https://mimiscozycorner.printify.me/product/34214029",
+  "not getting old": "https://mimiscozycorner.printify.me/product/34213966",
+  "prayed for patience": "https://mimiscozycorner.printify.me/product/34213875",
+  "queen to gangsta": "https://mimiscozycorner.printify.me/product/34213946",
+  "todays plan": "https://mimiscozycorner.printify.me/product/34213990",
+  "why drama": "https://mimiscozycorner.printify.me/product/34213895",
 
 };
 
